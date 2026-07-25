@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="tr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TUS">
+<meta name="theme-color" content="#0B0E14">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>TUS · Komuta Merkezi</title>
+<style>
+:root{
+  --ink:#0B0E14; --s1:#171C24; --s2:#1F252F; --s3:#262D38;
+  --ln:#2A323D; --ln2:#39434F;
+  --bone:#E9E5DC; --t2:#9BA3AD; --t3:#69727C;
+  --brass:#B08D4F; --brass2:#D8B87A; --jade:#5A8F76; --clay:#A8574F; --steel:#5C7B9C;
+  --serif:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,'SF Mono',Menlo,monospace;
+  --st:env(safe-area-inset-top); --sb:env(safe-area-inset-bottom);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--ink);color:var(--bone);
+  font-family:var(--sans);font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+body{padding-bottom:calc(74px + var(--sb))}
+button,input,textarea{font-family:inherit;color:inherit}
+::-webkit-scrollbar{width:0;height:0}
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+/* ÜST BAŞLIK */
+.top{position:sticky;top:0;z-index:50;background:rgba(15,19,25,.94);
+  backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+  border-bottom:1px solid var(--ln);padding-top:var(--st)}
+.topin{max-width:900px;margin:0 auto;padding:11px 16px;display:flex;align-items:baseline;gap:12px}
+.eyebrow{font-size:8.5px;letter-spacing:.28em;color:var(--brass);font-weight:700;
+  text-transform:uppercase}
+.count{font-family:var(--serif);font-size:26px;letter-spacing:-.01em;line-height:1;margin-top:3px}
+.count s{text-decoration:none;font-family:var(--sans);font-size:11.5px;color:var(--t2);
+  letter-spacing:.04em;margin-left:6px}
+.clock{margin-left:auto;text-align:right;font-family:var(--mono);font-size:11px;color:var(--t3);
+  font-variant-numeric:tabular-nums;line-height:1.35}
+.rule{height:1px;background:var(--ln);position:relative}
+.rule i{position:absolute;left:0;top:0;height:1px;background:var(--brass);
+  transition:width .7s cubic-bezier(.4,0,.2,1)}
+.wrap{max-width:900px;margin:0 auto;padding:14px 14px 8px}
+
+/* ALT GEZİNME */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(15,19,25,.96);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-top:1px solid var(--ln);padding-bottom:var(--sb)}
+.navin{max-width:900px;margin:0 auto;display:flex}
+.nb{flex:1;background:none;border:none;padding:10px 2px 12px;cursor:pointer;color:var(--t3);
+  display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;
+  font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+.nb.on{color:var(--bone)}
+.nb.on::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:20px;height:1.5px;background:var(--brass)}
+.nb svg{width:18px;height:18px}
+.nb b{position:absolute;top:5px;right:calc(50% - 20px);background:var(--clay);color:#fff;
+  font-size:8.5px;font-weight:800;min-width:15px;height:15px;border-radius:8px;
+  display:grid;place-items:center;padding:0 3px}
+
+/* GENEL */
+.card{background:var(--s1);border:1px solid var(--ln);border-radius:3px}
+.sec{display:flex;align-items:baseline;gap:9px;margin:22px 0 9px}
+.sec h2{font-family:var(--serif);font-size:14px;font-weight:400;letter-spacing:.03em;margin:0;
+  color:var(--bone)}
+.sec span{font-size:9.5px;letter-spacing:.16em;color:var(--t3);font-weight:700;
+  text-transform:uppercase;margin-left:auto;font-family:var(--sans)}
+.tag{font-size:8px;font-weight:800;letter-spacing:.13em;padding:3px 6px;
+  text-transform:uppercase;white-space:nowrap;display:inline-block;border-radius:2px}
+.txt{background:none;border:none;color:var(--t3);font-size:10px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer;padding:5px 8px}
+.txt:active{color:var(--bone)}
+.btn{width:100%;padding:13px;border-radius:3px;font-size:12px;font-weight:800;cursor:pointer;
+  border:1px solid var(--ln2);background:var(--s2);letter-spacing:.11em;text-transform:uppercase}
+.btn:active{background:var(--s3)}
+.btn.hero{border-color:var(--brass);background:rgba(176,141,79,.12);color:var(--brass)}
+.inp{width:100%;padding:10px 11px;background:var(--ink);border:1px solid var(--ln2);
+  border-radius:3px;font-size:14px;font-weight:600}
+.inp:focus{outline:none;border-color:var(--brass)}
+.lbl{font-size:8.5px;color:var(--t3);margin-bottom:5px;font-weight:800;letter-spacing:.14em;
+  text-transform:uppercase}
+
+/* GÜN BAŞI */
+.hero{border:1px solid var(--ln);border-left:2px solid var(--brass);background:var(--s1);
+  padding:16px 17px;display:flex;gap:16px;align-items:flex-start;margin-bottom:12px}
+.gnum{font-family:var(--serif);font-size:52px;line-height:.82;letter-spacing:-.03em}
+.glbl{font-size:8px;letter-spacing:.26em;color:var(--t3);font-weight:800;text-transform:uppercase}
+.dial{position:relative;display:grid;place-items:center;flex:0 0 auto}
+.dial b{position:absolute;font-family:var(--serif);font-size:15px;font-weight:400}
+
+/* ŞU AN / SIRADAKİ */
+.now{background:var(--s1);border:1px solid var(--ln);border-left:2px solid var(--clay);
+  padding:15px 16px;margin-bottom:12px}
+.nowk{font-size:8.5px;letter-spacing:.22em;font-weight:800;color:var(--clay);text-transform:uppercase}
+.nowt{font-family:var(--serif);font-size:18px;line-height:1.28;margin:8px 0 6px}
+.nowsrc{font-family:var(--mono);font-size:11px;color:var(--t2);line-height:1.5;word-break:break-word}
+
+/* AKIŞ */
+.flow{border:1px solid var(--ln);background:var(--s1)}
+.fr{display:flex;gap:12px;padding:10px 14px;border-left:2px solid transparent}
+.fr+.fr{border-top:1px solid var(--ln)}
+.fr.live{background:var(--s2);border-left-color:var(--brass)}
+.ft{flex:0 0 42px;font-family:var(--mono);font-size:11.5px;font-variant-numeric:tabular-nums;
+  color:var(--t3);padding-top:2px}
+.fr.live .ft{color:var(--brass)}
+.fi{font-size:13px;font-weight:600;color:var(--t2)}
+.fr.live .fi{color:var(--bone)}
+.fd{font-size:10.5px;color:var(--t3);margin-top:2px;line-height:1.42}
+.fsub{margin-top:7px;padding:8px 10px;background:var(--ink);border:1px solid var(--ln)}
+
+/* GÖREV */
+.task{display:flex;gap:12px;padding:12px 14px;background:var(--s1);border:1px solid var(--ln);
+  border-left:2px solid var(--ln2);cursor:pointer}
+.task:active{background:var(--s2)}
+.task.done{background:transparent}
+.cb{flex:0 0 18px;height:18px;border:1px solid var(--ln2);display:grid;place-items:center;
+  margin-top:2px;border-radius:2px}
+.cb.on{background:var(--jade);border-color:var(--jade)}
+.cb svg{width:11px;height:11px;opacity:0}
+.cb.on svg{opacity:1}
+.tw{font-size:13.5px;font-weight:600;line-height:1.36}
+.task.done .tw{color:var(--t3);text-decoration:line-through}
+.tsrc{font-family:var(--mono);font-size:10.5px;color:var(--t3);margin-top:3px;line-height:1.45;
+  word-break:break-word}
+.thr{font-family:var(--mono);font-size:11px;color:var(--t3);font-variant-numeric:tabular-nums}
+
+/* TAKVİM */
+.day{background:var(--s1);border:1px solid var(--ln);margin-bottom:5px}
+.day.today{border-color:var(--brass)}
+.day.past{opacity:.72}
+.dayh{display:flex;gap:12px;padding:11px 13px;cursor:pointer;align-items:center}
+.dn{font-family:var(--serif);font-size:19px;line-height:1;flex:0 0 26px;text-align:center}
+.bar{height:2px;background:var(--ln);margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%}
+.phase{padding:12px 14px;margin:22px 0 8px;border:1px solid var(--ln);
+  border-left:2px solid var(--brass);background:var(--s1)}
+.phase h3{font-family:var(--serif);font-size:13px;font-weight:400;margin:0;letter-spacing:.08em;
+  text-transform:uppercase}
+.phase p{margin:5px 0 0;font-size:11px;color:var(--t2);line-height:1.5}
+
+/* İSTATİSTİK */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.stat{background:var(--s1);border:1px solid var(--ln);padding:12px 11px}
+.stat .k{font-size:8px;letter-spacing:.16em;color:var(--t3);font-weight:800;text-transform:uppercase}
+.stat .v{font-family:var(--serif);font-size:23px;margin-top:5px;line-height:1;
+  font-variant-numeric:tabular-nums}
+.stat .d{font-size:10.5px;font-weight:700;margin-top:4px;font-family:var(--mono)}
+.chart{background:var(--s1);border:1px solid var(--ln);padding:14px 6px 8px}
+
+/* TAHMİN */
+.pred{border:1px solid var(--brass);background:rgba(176,141,79,.07);padding:17px}
+.predv{font-family:var(--serif);font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
+.predr{font-family:var(--mono);font-size:11.5px;color:var(--t2);margin-top:6px}
+
+/* KART (DEFTER) */
+.bigcard{background:var(--s1);border:1px solid var(--ln);padding:22px 18px;min-height:190px;
+  display:flex;flex-direction:column;cursor:pointer;position:relative}
+.bigcard .stage{font-size:8.5px;letter-spacing:.22em;color:var(--t3);font-weight:800;
+  text-transform:uppercase;margin-bottom:14px}
+.bigcard .q{font-family:var(--serif);font-size:19px;line-height:1.42;flex:1}
+.bigcard .a{font-size:15.5px;line-height:1.55;margin-top:16px;padding-top:15px;
+  border-top:1px solid var(--ln);color:var(--bone)}
+.bigcard .trap{font-size:12.5px;color:var(--clay);margin-top:11px;line-height:1.5}
+.hint{text-align:center;font-size:10px;letter-spacing:.16em;color:var(--t3);font-weight:700;
+  text-transform:uppercase;margin-top:12px}
+.grades{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:12px}
+.gr{padding:11px 3px;border:1px solid var(--ln2);background:var(--s2);cursor:pointer;
+  font-size:10px;font-weight:800;letter-spacing:.05em;text-align:center;border-radius:2px;
+  line-height:1.35}
+.gr s{display:block;text-decoration:none;font-family:var(--mono);font-size:9px;color:var(--t3);
+  font-weight:600;margin-top:3px}
+
+/* KOÇLUK */
+.nudge{display:flex;gap:11px;padding:12px 14px;background:var(--s1);border:1px solid var(--ln);
+  border-left:2px solid var(--steel);margin-bottom:5px}
+.nudge .ic{flex:0 0 auto;font-family:var(--serif);font-size:15px;color:var(--steel);line-height:1.3}
+.nudge p{margin:0;font-size:12.5px;line-height:1.48;color:var(--t2)}
+.nudge p b{color:var(--bone);font-weight:700}
+
+/* KAYIT */
+.foot{display:flex;align-items:center;gap:10px;margin:26px 0 6px;padding-top:13px;
+  border-top:1px solid var(--ln)}
+.sync{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.sync i{display:inline-block;width:5px;height:5px;margin-right:7px;vertical-align:middle;
+  background:currentColor;border-radius:50%}
+
+/* YILDIZ HARİTASI */
+.sky{background:linear-gradient(180deg,#080B11,#111620);border:1px solid var(--ln);
+  overflow:hidden}
+.sky svg{width:100%;height:auto;display:block}
+.skycap{font-size:10.5px;color:var(--t3);padding:9px 13px 11px;line-height:1.55;
+  border-top:1px solid var(--ln);background:var(--s1)}
+.skycap b{color:var(--t2);font-weight:700}
+/* DİYALOG — iframe içinde prompt/confirm/alert engellidir */
+.veil{position:fixed;inset:0;z-index:90;background:rgba(5,7,11,.84);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:100%;max-width:520px;background:var(--s1);border:1px solid var(--ln2);
+  border-bottom:none;border-radius:6px 6px 0 0;padding:20px 18px calc(22px + var(--sb));
+  max-height:88vh;overflow-y:auto;animation:up .22s ease}
+@keyframes up{from{transform:translateY(18px);opacity:.6}to{transform:none;opacity:1}}
+.sheet h3{font-family:var(--serif);font-size:17px;font-weight:400;margin:0 0 4px}
+.sheet .sub{font-size:12.5px;color:var(--t2);line-height:1.55;margin-bottom:16px}
+.fld{margin-bottom:12px}
+.pills{display:flex;gap:5px;flex-wrap:wrap}
+.pill{padding:7px 11px;border:1px solid var(--ln2);background:transparent;color:var(--t3);
+  font-size:11px;font-weight:700;cursor:pointer;border-radius:2px}
+.pill.on{border-color:var(--brass);color:var(--brass);background:rgba(176,141,79,.12)}
+textarea.inp{resize:vertical;line-height:1.45}
+.btn.warn{border-color:var(--clay);color:var(--clay);background:rgba(168,87,79,.1)}
+.diag{width:100%;font-family:var(--mono);font-size:10px;color:var(--t3);line-height:1.65;
+  margin-top:8px;padding:9px 11px;background:var(--s1);border:1px solid var(--ln);
+  white-space:pre-wrap;word-break:break-word}
+.fade{animation:f .28s ease}
+@keyframes f{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(max-width:400px){.wrap{padding:13px 11px 8px}.gnum{font-size:44px}}
+</style></head>
+<body>
+<div class="top"><div class="topin">
+  <div style="flex:1;min-width:0">
+    <div class="eyebrow">TUS · 23 Ağustos 2026</div>
+    <div class="count"><span id="kg">—</span></div>
+  </div>
+  <div class="clock"><div id="ct">—</div><div id="cd" style="color:var(--t3)">Bursa</div></div>
+</div><div class="rule"><i id="rule" style="width:0"></i></div></div>
+
+<div class="wrap" id="app"></div>
+
+<!-- JS çalışmazsa görünür kalır; başarılı açılışta script bunu kaldırır -->
+<div class="wrap" id="nojs">
+  <div style="border:1px solid var(--clay);padding:18px;background:var(--s1)">
+    <div style="font-size:8.5px;letter-spacing:.26em;color:var(--clay);font-weight:800;
+      text-transform:uppercase">Uygulama açılamadı</div>
+    <div style="font-family:var(--serif);font-size:17px;margin:9px 0 10px">
+      JavaScript çalışmıyor</div>
+    <div style="font-size:12.5px;color:var(--t2);line-height:1.65">
+      Bu dosya <b style="color:var(--bone)">Dosyalar uygulamasının önizlemesinde</b> açıldı.
+      Önizleme script çalıştırmaz — uygulamada hata yok.<br><br>
+      Bu klasördeki beş dosyanın tamamını bir statik yayına yükle, sonra çıkan adresi
+      <b style="color:var(--bone)">Safari’de</b> aç. Safari’de Paylaş → Ana Ekrana Ekle dersen
+      ikonlu, tam ekran ve çevrimdışı çalışan bir uygulama olur.
+    </div>
+    <div id="hata" style="font-family:var(--mono);font-size:10.5px;color:var(--clay);
+      margin-top:14px;white-space:pre-wrap;word-break:break-word"></div>
+  </div>
+</div>
+<div id="modal"></div>
+<div class="nav"><div class="navin" id="nav"></div></div>
+
+<script>
+/* Beklenmeyen hata olursa boş ekran yerine hatayı göster */
+/* Çevrimdışı çalışma: service worker kaydı (yalnızca https/localhost'ta çalışır) */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('./sw.js').catch(function(){});
+  });
+}
+window.addEventListener('error',function(ev){
+  var el=document.getElementById('hata');
+  if(el) el.textContent='Hata: '+(ev.message||'?')+'  ('+(ev.lineno||'?')+':'+(ev.colno||'?')+')';
+  var n=document.getElementById('nojs'); if(n) n.style.display='';
+});
+/* ══════════════════ VERİ ══════════════════ */
+const SINAV = '2026-08-23T10:15:00+03:00';
+const BASLA = '2026-07-25';
+
+/* Branş kodları: an=Anatomi he=Histo-Emb fz=Fizyoloji bk=Biyokimya mb=Mikrobiyoloji
+   pt=Patoloji fr=Farmakoloji dh=Dahiliye pd=Pediatri gc=Genel Cerrahi kd=Kadın Doğum
+   -- (genel/çoklu) */
+const BR = {
+  an:{ad:'Anatomi',s:13,t:1}, he:{ad:'Histo-Emb',s:7,t:1}, fz:{ad:'Fizyoloji',s:8,t:1},
+  bk:{ad:'Biyokimya',s:18,t:1}, mb:{ad:'Mikrobiyoloji',s:18,t:1}, pt:{ad:'Patoloji',s:18,t:1},
+  fr:{ad:'Farmakoloji',s:18,t:1}, dh:{ad:'Dahiliye',s:35,t:0}, pd:{ad:'Pediatri',s:25,t:0},
+  gc:{ad:'Genel Cerrahi',s:30,t:0}, kd:{ad:'Kadın Doğum',s:10,t:0}
+};
+const PRI = {
+  k:{c:'var(--clay)',  l:'Kritik'},   y:{c:'var(--brass)', l:'Yüksek'},
+  o:{c:'var(--t2)',    l:'Orta'},     d:{c:'var(--steel)', l:'Düşük'},
+  t:{c:'var(--steel)', l:'Tekrar'},   s:{c:'var(--jade)',  l:'Soru'},
+  a:{c:'var(--jade)',  l:'Kart'},     v:{c:'var(--t3)',    l:'Video'}
+};
+const FAZ = {
+  1:{n:'Faz I · Farmakoloji ve Biyokimya',g:[1,8],d:'Gün 1–8 · Hiç açılmamış iki kitap, 36 soru. En büyük boşluk burada.'},
+  2:{n:'Faz II · Sistem Blokları',g:[9,22],d:'Gün 9–22 · K puanında 1 klinik net = 1.34 temel net. Klinik önde.'},
+  3:{n:'Faz III · Ezber Zirvesi',g:[23,29],d:'Gün 23–29 · Sınava en yakın öğrenilen en taze kalır.'}
+};
+
+const PLAN = [
+{g:1,d:'25 Tem',gn:'Cmt',faz:1,kisa:1,it:[
+ {s:2.0,p:'y',br:'fr',w:'Genel Farmakoloji: farmakokinetik, farmakodinamik, reseptör tipleri',src:'Y.Şahin Hızlı Tekrar s.7 → FastTrack bölüm 1'},
+ {s:2.5,p:'k',br:'fr',w:'Otonom sinir sistemi: reseptör haritasını kâğıda çiz (M1-3, α1-2, β1-3)',src:'Y.Şahin s.31 → TTS Farmakoloji OSS'},
+ {s:0.5,p:'t',br:'fr',w:'Kapalı kitap: OSS reseptör-etki tablosunu kâğıda yaz',src:'Üretim etkisi · sonra kitapla karşılaştır'}]},
+{g:2,d:'26 Tem',gn:'Paz',faz:1,spor:1,it:[
+ {s:1.5,p:'v',br:'fr',w:'Video: Dershane Farmakoloji — Otonom Sinir Sistemi',src:'1.5x · kitap açık · durdurmadan'},
+ {s:2.0,p:'k',br:'fr',w:'OSS ilaçları: parasempatomimetik/litik, sempatomimetik/litik',src:'TusTime Konu s.17 → Y.Şahin s.31'},
+ {s:3.0,p:'k',br:'fr',w:'KVS: antihipertansif, antiaritmik, kalp yetmezliği ilaçları',src:'Konu s.25 → Y.Şahin s.51'},
+ {s:2.0,p:'k',br:'fr',w:'KVS: antikoagülan, antiagregan, fibrinolitik, statin',src:'Konu s.39–43 → Y.Şahin s.51–86'},
+ {s:1.0,p:'s',br:'fr',w:'TTS Farmakoloji: OSS + KVS çıkmış sorular',src:'Çıkmış soru = sınavın dili'}]},
+{g:3,d:'27 Tem',gn:'Pzt',faz:1,deneme:1,it:[
+ {s:3.0,p:'k',br:'fr',w:'SSS: antipsikotik, antidepresan, antiepileptik, antiparkinson',src:'FastTrack + Konu s.53 → Y.Şahin s.105'},
+ {s:1.5,p:'y',br:'fr',w:'SSS: hipnosedatif, nöromusküler bloker, anestezik, opioid',src:'Konu s.54–75 → Y.Şahin s.105'},
+ {s:0.5,p:'t',br:'fr',w:'Kapalı kitap: SSS ilaçları — sınıf, mekanizma, yan etki tablosu',src:'Kâğıda yaz, sonra kontrol et'}]},
+{g:4,d:'28 Tem',gn:'Salı',faz:1,off:1,it:[
+ {s:0,p:'d',br:'--',w:'İzin — kız arkadaşının doğum günü',src:'Plana yazılı. Suçluluk yok.'}]},
+{g:5,d:'29 Tem',gn:'Çrş',faz:1,spor:1,it:[
+ {s:0.5,p:'t',br:'fr',w:'Geri çağırma: OSS reseptör haritasını kitapsız çiz',src:'T2 · 4 gün · Cepeda optimal aralık'},
+ {s:1.5,p:'v',br:'fr',w:'Video: Antibiyotikler (son video hakkın)',src:'1.5x · bundan sonra video yok'},
+ {s:2.5,p:'k',br:'fr',w:'Antibiyotikler: beta-laktam, makrolid, kinolon, aminoglikozid',src:'Konu s.90 → Y.Şahin s.149'},
+ {s:2.5,p:'k',br:'fr',w:'Antitüberküloz, antifungal, antiviral, antiparaziter',src:'Konu s.98–105 → Y.Şahin s.149'},
+ {s:2.0,p:'k',br:'fr',w:'Antineoplastikler ve immünsüpresifler',src:'Konu s.106–114 → Y.Şahin s.149'},
+ {s:0.5,p:'t',br:'fr',w:'Kapalı kitap: kemoterapötik yan etki tablosunu yaz',src:'En çok karışan tablo'}]},
+{g:6,d:'30 Tem',gn:'Prş',faz:1,deneme:1,it:[
+ {s:0.5,p:'t',br:'fr',w:'Geri çağırma: SSS ilaçları — dünkü yanlışları çağır',src:'T2 · 3 gün'},
+ {s:2.0,p:'o',br:'fr',w:'Hormonlar: tiroid, kortikosteroid, diyabet ilaçları',src:'Konu s.44 → Y.Şahin s.87'},
+ {s:1.0,p:'d',br:'fr',w:'Otakoid, NSAİİ, GİS, toksikoloji — sadece soru',src:'Y.Şahin s.135, s.193'},
+ {s:0.5,p:'t',br:'fr',w:'Farmakoloji kapanış taraması: FastTrack’i baştan sona',src:'6 günde bir ders bitti'}]},
+{g:7,d:'31 Tem',gn:'Cuma',faz:1,spor:1,it:[
+ {s:1.5,p:'k',br:'bk',w:'Flash Biyokimya: proteinler ve aminoasitler',src:'Flash s.51–76 · tüm biyokimya 78 sayfa'},
+ {s:3.5,p:'k',br:'bk',w:'Y.Şahin: Proteinler (s.151) + Aminoasitler (s.123)',src:'Son 5 sınav: 7-8-8-8-6 = 37 soru'},
+ {s:2.0,p:'k',br:'bk',w:'Enzimler ve klinik biyokimya',src:'Flash s.77 → Y.Şahin s.171'},
+ {s:2.0,p:'s',br:'bk',w:'TTS Biyokimya: protein, aminoasit, enzim',src:''}]},
+{g:8,d:'1 Ağu',gn:'Cmt',faz:1,it:[
+ {s:0.5,p:'t',br:'fr',w:'Geri çağırma: kemoterapötikler — spot tarama',src:'T2 · 3 gün'},
+ {s:2.0,p:'y',br:'bk',w:'Karbonhidratlar: glikoliz, glikojen, PPP, galaktoz',src:'Flash s.3 → Y.Şahin s.7'},
+ {s:2.0,p:'y',br:'bk',w:'Lipidler: lipoprotein, β-oksidasyon, keton cisimleri',src:'Flash s.23 → Y.Şahin s.55'},
+ {s:1.5,p:'o',br:'bk',w:'Vitaminler ve hormonlar',src:'Flash s.91, s.97 → Y.Şahin s.197'},
+ {s:1.0,p:'d',br:'bk',w:'Nükleik asitler ve hücre — sadece soru',src:'Y.Şahin s.95, s.183'},
+ {s:2.0,p:'s',br:'bk',w:'24’lü Biyokimya denemesi + TTS',src:'Faz I kapandı: iki ders'},
+ {s:0.5,p:'t',br:'bk',w:'Kapalı kitap: Biyokimya spot tablolarını yaz',src:'Faz I kapanış'}]},
+{g:9,d:'2 Ağu',gn:'Paz',faz:2,spor:1,deneme:1,it:[
+ {s:1.5,p:'y',br:'fz',w:'Fizyoloji KVS: aksiyon potansiyeli, EKG, kalp döngüsü, debi',src:'TusTime Fizyo s.91 — notların var'},
+ {s:1.5,p:'o',br:'pt',w:'Patoloji KVS — koruma modu, hızlı geç',src:'Beyazyıldız s.146 · bu ders %65’te'},
+ {s:1.5,p:'s',br:'an',w:'Anatomi: dolaşım ve solunum sistemi',src:'TusTime Anatomi + TTS 2024'}]},
+{g:10,d:'3 Ağu',gn:'Pzt',faz:2,it:[
+ {s:0.5,p:'t',br:'fr',w:'Geri çağırma: KVS ilaçları — klinikle birleşiyor',src:'T3 · 8 gün · sinerji anı'},
+ {s:3.5,p:'k',br:'dh',w:'Dahiliye: Kardiyoloji — aritmi, KY, KAH, kapak',src:'Uslu Konu 1.k s.102 → SST s.93'},
+ {s:2.5,p:'o',br:'dh',w:'Dahiliye: Göğüs hastalıkları',src:'Uslu Konu 1.k s.184 → SST s.139'},
+ {s:1.5,p:'o',br:'pt',w:'Patoloji: solunum sistemi — koruma',src:'Beyazyıldız s.180'},
+ {s:1.5,p:'s',br:'dh',w:'TTS Dahiliye: kardiyoloji + göğüs',src:''}]},
+{g:11,d:'4 Ağu',gn:'Salı',faz:2,spor:1,it:[
+ {s:3.5,p:'k',br:'pd',w:'Pediatri: kardiyovasküler — 12 soru, Pediatri’nin en büyüğü',src:'Ped Konu böl.20 → Ped Soru s.109'},
+ {s:2.0,p:'y',br:'pd',w:'Pediatri: göğüs — kistik fibroz, krup, bronşiolit',src:'Ped Konu böl.19 → Ped Soru s.161'},
+ {s:1.5,p:'o',br:'gc',w:'Küçük Stajlar: KVC + göğüs cerrahisi',src:'KS Konu s.187 → KS Soru s.176'},
+ {s:2.0,p:'s',br:'pd',w:'Klinisyen Vaka Pediatri: KVS vakaları',src:'Serpiştirme — ayırıcı tanı'}]},
+{g:12,d:'5 Ağu',gn:'Çrş',faz:2,it:[
+ {s:1.0,p:'t',br:'fr',w:'Geri çağırma: Farmakoloji T3 — FastTrack tam tarama',src:'6 gün · genişleyen aralık'},
+ {s:1.0,p:'y',br:'fz',w:'Fizyoloji: GİS — hormonlar, sekresyon, emilim',src:'Fizyo Konu s.140'},
+ {s:1.5,p:'o',br:'pt',w:'Patoloji: GİS, karaciğer, pankreas — koruma',src:'Beyazyıldız s.266, 300, 322'},
+ {s:1.0,p:'s',br:'an',w:'Anatomi: gastrointestinal sistem',src:'TusTime Anatomi + TTS'},
+ {s:3.0,p:'y',br:'dh',w:'Dahiliye: gastroenteroloji ve hepatoloji',src:'Uslu Konu 2.k s.136 → SST s.249'},
+ {s:1.5,p:'s',br:'--',w:'Karışık blok: KVS + GİS serpiştirilmiş sorular',src:'Serpiştirme g=0.42'}]},
+{g:13,d:'6 Ağu',gn:'Prş',faz:2,spor:1,deneme:1,it:[
+ {s:2.0,p:'k',br:'gc',w:'Genel Cerrahi: mide ve duodenum — 8 soru',src:'Speetus + GC Konu s.67 → Kodal SB'},
+ {s:2.5,p:'k',br:'gc',w:'Genel Cerrahi: kolon-rektum (8) + ince bağırsak (5)',src:'GC Konu s.80, 74 → Kodal SB'}]},
+{g:14,d:'7 Ağu',gn:'Cuma',faz:2,it:[
+ {s:1.0,p:'t',br:'bk',w:'Geri çağırma: Biyokimya T2 — Flash’ı baştan sona',src:'6 gün'},
+ {s:2.5,p:'y',br:'gc',w:'Genel Cerrahi: karaciğer, portal HT, pankreas, dalak',src:'GC Konu s.103, 109, 119, 130'},
+ {s:1.5,p:'o',br:'gc',w:'Genel Cerrahi: safra kesesi ve yolları',src:'GC Konu s.112 → GC Soru s.227'},
+ {s:2.0,p:'y',br:'pd',w:'Pediatri: GİS ve hepatoloji',src:'Ped Konu böl.7 → Ped Soru s.70'},
+ {s:1.5,p:'s',br:'gc',w:'TTS Genel Cerrahi: mide, kolon, safra',src:''},
+ {s:0.5,p:'d',br:'--',w:'Yarı yol kontrolü: geride kaldıysan Yeniden Diz’i çalıştır',src:'Takvim sekmesi · dürüst ol'}]},
+{g:15,d:'8 Ağu',gn:'Cmt',faz:2,spor:1,it:[
+ {s:1.5,p:'y',br:'fz',w:'Fizyoloji: böbrek — nefron, GFR, asit-baz',src:'Fizyo Konu s.159'},
+ {s:1.5,p:'o',br:'pt',w:'Patoloji: üriner ve erkek genital — koruma',src:'Beyazyıldız s.204, 236'},
+ {s:0.5,p:'s',br:'an',w:'Anatomi: ürogenital sistem',src:'TusTime Anatomi + TTS'},
+ {s:2.0,p:'y',br:'dh',w:'Dahiliye: nefroloji — glomerülonefrit, AKI/KBH',src:'Uslu Konu 2.k s.8 → SST s.171'},
+ {s:2.5,p:'k',br:'pd',w:'Pediatri: nefroloji — 9 soru',src:'Ped Konu böl.17 → Ped Soru s.336'},
+ {s:1.5,p:'o',br:'gc',w:'Küçük Stajlar: üroloji + çocuk cerrahisi',src:'KS Konu s.150 → KS Soru s.142'}]},
+{g:16,d:'9 Ağu',gn:'Paz',faz:2,deneme:1,it:[
+ {s:0.5,p:'t',br:'--',w:'Geri çağırma: KVS bloğu — Ped KVS + Dahiliye kardiyo',src:'7 gün'},
+ {s:2.5,p:'k',br:'kd',w:'Kadın Doğum: obstetri — dersin %40’ı',src:'TusTime KD Konu s.81–133 + çalışma soruları'},
+ {s:1.5,p:'y',br:'kd',w:'Kadın Doğum: reprodüktif endokrinoloji',src:'KD Konu s.5–38 + çalışma soruları'}]},
+{g:17,d:'10 Ağu',gn:'Pzt',faz:2,spor:1,it:[
+ {s:1.0,p:'o',br:'kd',w:'Kadın Doğum: genel jinekoloji + jinekolojik onkoloji',src:'KD Konu s.39, 62 + çalışma soruları'},
+ {s:1.0,p:'s',br:'kd',w:'TTS Kadın Doğum + FastTrack KD',src:'Üç soru kaynağın var'},
+ {s:3.0,p:'s',br:'an',w:'Anatomi: nöroanatomi — 13 sorunun 4’ü burada',src:'TusTime Anatomi + TTS 2024'},
+ {s:1.5,p:'y',br:'fz',w:'Fizyoloji: sinir sistemi',src:'Fizyo Konu s.22'},
+ {s:3.0,p:'k',br:'gc',w:'Küçük Stajlar: nöroloji — 11 soru, KS’nin en büyüğü',src:'KS Konu s.5 → KS Soru s.7'}]},
+{g:18,d:'11 Ağu',gn:'Salı',faz:2,it:[
+ {s:0.5,p:'t',br:'fr',w:'Geri çağırma: Farmakoloji SSS — psikiyatri ile birleşiyor',src:'T4 · sinerji'},
+ {s:2.0,p:'k',br:'gc',w:'Küçük Stajlar: nöroşirurji',src:'KS Konu s.32 → KS Soru s.76'},
+ {s:1.5,p:'y',br:'gc',w:'Küçük Stajlar: psikiyatri',src:'KS Konu s.66 → KS Soru s.115'},
+ {s:1.5,p:'y',br:'gc',w:'Küçük Stajlar: ortopedi + FTR',src:'KS Konu s.135, 127 → Soru s.254'},
+ {s:1.0,p:'o',br:'pt',w:'Patoloji: kas-iskelet ve sinir sistemi — koruma',src:'Beyazyıldız s.424, 350'},
+ {s:1.5,p:'y',br:'dh',w:'Dahiliye: romatoloji',src:'Uslu Konu 2.k s.216 → SST s.305'},
+ {s:1.0,p:'s',br:'an',w:'Anatomi: kaslar, kemikler, eklemler',src:'TusTime Anatomi + TTS'}]},
+{g:19,d:'12 Ağu',gn:'Çrş',faz:2,spor:1,deneme:1,it:[
+ {s:2.5,p:'k',br:'pd',w:'Pediatri: nöroloji — febril nöbet, epilepsi, nöromusküler',src:'Ped Konu böl.11 → Soru s.91'},
+ {s:2.0,p:'y',br:'pd',w:'Pediatri: romatoloji — FMF, JİA, Kawasaki',src:'Ped Konu böl.18 → Soru s.358'}]},
+{g:20,d:'13 Ağu',gn:'Prş',faz:2,it:[
+ {s:1.0,p:'t',br:'--',w:'Geri çağırma: GİS bloğu — GC mide/kolon + Dahiliye gastro',src:'8 gün'},
+ {s:1.0,p:'o',br:'fz',w:'Fizyoloji endokrin + Patoloji endokrin',src:'Fizyo s.179 · Beyazyıldız s.378'},
+ {s:2.0,p:'o',br:'dh',w:'Dahiliye: endokrinoloji',src:'Uslu Konu 2.k s.60 → SST s.195'},
+ {s:2.5,p:'k',br:'gc',w:'Genel Cerrahi: MEME — 10 soru, en banko + Patoloji meme',src:'GC Konu s.36 → Kodal SB'},
+ {s:1.5,p:'y',br:'gc',w:'Genel Cerrahi: tiroid, paratiroid, adrenal',src:'GC Konu s.44, 50 → Soru s.81'},
+ {s:1.5,p:'s',br:'--',w:'Karışık blok: endokrin serpiştirilmiş sorular',src:'Serpiştirme'}]},
+{g:21,d:'14 Ağu',gn:'Cuma',faz:2,spor:1,deneme:1,it:[
+ {s:2.5,p:'y',br:'pd',w:'Pediatri: endokrinoloji — KAH, DKA, tiroid',src:'Ped Konu böl.21 → Soru s.226'},
+ {s:2.0,p:'y',br:'pd',w:'Pediatri: metabolik — tablo ezberi, metin okuma yok',src:'Ped Konu böl.14 → Soru s.248'}]},
+{g:22,d:'15 Ağu',gn:'Cmt',faz:2,it:[
+ {s:1.0,p:'t',br:'bk',w:'Geri çağırma: Biyokimya T3 — Flash tam tarama',src:'8 gün'},
+ {s:2.0,p:'y',br:'pd',w:'Pediatri: büyüme ve gelişme',src:'Ped Konu böl.2 → Soru s.48'},
+ {s:2.0,p:'o',br:'dh',w:'Dahiliye: hematoloji ve onkoloji',src:'Uslu Konu 1.k s.8, 90 → SST s.5'},
+ {s:1.0,p:'o',br:'pt',w:'Patoloji: hematopoetik ve neoplazi — koruma',src:'Beyazyıldız s.158, 104'},
+ {s:2.0,p:'y',br:'pd',w:'Pediatri: hematoloji ve onkoloji',src:'Ped Konu böl.8, 9 → Soru s.284'},
+ {s:1.0,p:'k',br:'gc',w:'Küçük Stajlar: dermatoloji + Patoloji deri',src:'KS Konu s.46 → Soru s.325'}]},
+{g:23,d:'16 Ağu',gn:'Paz',faz:3,spor:1,deneme:1,it:[
+ {s:3.0,p:'k',br:'mb',w:'Stafilokok, streptokok, Gram(+) basiller',src:'Mikro Konu s.87 — notların var → F.Akay'},
+ {s:1.5,p:'k',br:'mb',w:'Gram(−) çomaklar, diplokoklar, anaeroplar',src:'Mikro Konu s.135–189 → F.Akay'}]},
+{g:24,d:'17 Ağu',gn:'Pzt',faz:3,it:[
+ {s:1.0,p:'k',br:'mb',w:'Mikobakteri, spiroket, riketsiya, klamidya, mikoplazma',src:'Kendi TTS çapraz notların'},
+ {s:0.5,p:'t',br:'fr',w:'Geri çağırma: antibiyotikler — etkenle eşleşiyor',src:'T4 · en güçlü sinerji'},
+ {s:2.0,p:'y',br:'mb',w:'Viroloji + hepatit virüsleri',src:'Mikro Konu s.190–258 → F.Akay'},
+ {s:1.5,p:'o',br:'mb',w:'Mikoloji + parazitoloji',src:'Mikro Konu s.259, 287 → F.Akay'},
+ {s:1.0,p:'o',br:'mb',w:'İmmünoloji — Mikro, Pato ve Pediatri’ye birden hizmet',src:'Mikro Konu s.47 → F.Akay'},
+ {s:2.5,p:'k',br:'dh',w:'Enfeksiyon hastalıkları → Dahiliye bankosu',src:'Mikro Konu s.321 → Dahiliye SST s.337'}]},
+{g:25,d:'18 Ağu',gn:'Salı',faz:3,spor:1,deneme:1,it:[
+ {s:3.0,p:'k',br:'gc',w:'Genel Cerrahi: şok, travma, travmaya sistemik cevap',src:'GC Konu s.14, 27, 11 → Kodal SB'},
+ {s:2.0,p:'k',br:'gc',w:'Genel Cerrahi: yanık, hemostaz, cerrahi enfeksiyon, yara',src:'GC Konu s.32, 23, 18, 21'}]},
+{g:26,d:'19 Ağu',gn:'Çrş',faz:3,it:[
+ {s:0.5,p:'t',br:'--',w:'Geri çağırma: nöro bloğu — KS nöroloji + Ped nöro',src:'9 gün'},
+ {s:1.5,p:'y',br:'gc',w:'Küçük Stajlar: acil tıp + antidot tablosu',src:'KS Konu s.194 + Farma toksikoloji'},
+ {s:0.5,p:'d',br:'gc',w:'Genel Cerrahi: sıvı-elektrolit + fıtıklar — sadece soru',src:'GC Soru s.63, 289'},
+ {s:3.5,p:'k',br:'pd',w:'Pediatri: YENİDOĞAN — 11 soru',src:'Ped Konu böl.10 → Ped Soru s.1'},
+ {s:1.5,p:'o',br:'pd',w:'Pediatri: genetik + beslenme ve anne sütü',src:'Ped Konu böl.4, 3 → Soru s.40'},
+ {s:1.0,p:'d',br:'pd',w:'Pediatri: aşı, döküntülü hastalıklar, alerji — sadece tablo',src:'FastTrack Pediatri'}]},
+{g:27,d:'20 Ağu',gn:'Prş',faz:3,spor:1,deneme:1,it:[
+ {s:2.5,p:'s',br:'an',w:'Anatomi: nöroanatomi + kranial sinirler',src:'TTS 2024 + 24’lü Anatomi'},
+ {s:2.0,p:'s',br:'an',w:'Anatomi: brakiyal pleksus, ekstremite innervasyonu',src:'TTS Anatomi'}]},
+{g:28,d:'21 Ağu',gn:'Cuma',faz:3,it:[
+ {s:1.0,p:'t',br:'--',w:'Geri çağırma: Farmakoloji + Biyokimya son tarama',src:'T5 · sınavdan iki gün önce'},
+ {s:1.5,p:'o',br:'he',w:'Histoloji-Embriyoloji: genital + genel embriyoloji',src:'Klinisyen Vaka F-H-E'},
+ {s:1.0,p:'o',br:'he',w:'Histoloji: doku histolojisi',src:'Klinisyen Vaka F-H-E'},
+ {s:1.0,p:'d',br:'gc',w:'KS minörler: göz, KBB, anestezi, halk sağlığı, radyoloji',src:'Sadece soru'},
+ {s:3.0,p:'t',br:'--',w:'Tüm denemelerin yanlışlarını kapalı kitap tara — en değerli blok',src:'Analiz sekmesindeki zayıf branşlardan başla'},
+ {s:2.0,p:'t',br:'--',w:'Spot tablolar: antidot, aşı, evreleme, lab — tek sayfaya sığdır',src:'Sınav sabahı bunu okuyacaksın'}]},
+{g:29,d:'22 Ağu',gn:'Cmt',faz:3,sonGun:1,it:[
+ {s:1.5,p:'t',br:'--',w:'Hafif geri çağırma: güçlü olduğun konular',src:'Yeni konu yok · özgüven ve ısınma'},
+ {s:1.0,p:'t',br:'--',w:'Tek sayfalık spot tabloyu oku',src:'Sınav sabahı da bunu okuyacaksın'},
+ {s:1.0,p:'d',br:'--',w:'Sınav çantası, yol provası, erken uyku',src:'23:00’te yatakta ol'},
+ {s:0.5,p:'t',br:'--',w:'On dakika expressive writing: kaygılarını yaz',src:'Ramirez & Beilock 2011'}]}
+];
+
+const DENEME0 = [
+ {id:'d1',tarih:'2026-01-15',kaynak:'TUSTIME',b:{an:2.25,he:0,fz:0.5,bk:8,mb:10,pt:9,fr:3,dh:17.25,pd:14.5,gc:13.5,kd:2.25}},
+ {id:'d2',tarih:'2026-05-02',kaynak:'PRETUS 3',b:{an:-0.5,he:2.5,fz:3.75,bk:2.5,mb:4,pt:10.75,fr:2.5,dh:11.25,pd:10.25,gc:5.25,kd:0.75}},
+ {id:'d3',tarih:'2026-06-09',kaynak:'PRETUS 3',b:{an:2.75,he:4.75,fz:1,bk:-1,mb:3.5,pt:3,fr:2.75,dh:11,pd:3.25,gc:15.25,kd:3.25}},
+ {id:'d4',tarih:'2026-07-16',kaynak:'Perfecttime',b:{an:2.5,he:3.5,fz:2.25,bk:7.5,mb:5,pt:4.5,fr:2,dh:10,pd:8.5,gc:13.25,kd:1.75}},
+ {id:'d5',tarih:'2026-07-24',kaynak:'MediTUS',b:{an:2,he:2,fz:1.75,bk:6,mb:5.5,pt:11.75,fr:3.25,dh:15.5,pd:7.75,gc:12.75,kd:2.5}}
+];
+/* 24 Temmuz MediTUS'ta işaretlenen soru sayıları (branş bazlı hata yoğunluğu) */
+const HATA0 = {dh:21,pd:21,fr:16,an:14,bk:14,gc:14,mb:10,pt:9,fz:7,he:6,kd:6};
+
+/* ══════════════════ DEPOLAMA ══════════════════ */
+/* Zincir: window.storage → localStorage → bellek.
+   Biri hata verirse otomatik bir sonrakine düşer ve bunu açıkça söyler.
+   Claude sandbox'ında window.storage "Unexpected response type" verebiliyor;
+   iPad ana ekranında (Safari) localStorage sorunsuz çalışır. */
+const KA='tus_ana';
+const MOTOR={WS:'window.storage',LS:'localStorage',MEM:'bellek (geçici)'};
+let motor = (typeof window!=='undefined'&&window.storage&&typeof window.storage.set==='function')
+  ? 'WS' : 'LS';
+const bellek={};
+let durum='yuk';
+const TANI={sonYazma:null,sonHata:null,boyut:0,dogrulandi:null,dustu:[]};
+const SYNC={yuk:['Yükleniyor','var(--brass)'],yaz:['Kaydediliyor','var(--brass)'],
+  ok:['Kayıtlı','var(--t3)'],err:['KAYDEDİLEMEDİ','var(--clay)']};
+
+async function _get(k){
+  if(motor==='WS'){
+    let r; try{ r=await window.storage.get(k,false); }catch(e){ r=await window.storage.get(k); }
+    return (r&&r.value!=null)?String(r.value):null;
+  }
+  if(motor==='LS') return localStorage.getItem(k);
+  return bellek[k]!==undefined?bellek[k]:null;
+}
+async function _set(k,str){
+  if(motor==='WS'){
+    let r; try{ r=await window.storage.set(k,str,false); }catch(e){ r=await window.storage.set(k,str); }
+    if(!r) throw new Error('storage.set null döndü');
+  } else if(motor==='LS'){
+    localStorage.setItem(k,str);
+  } else {
+    bellek[k]=str;
+  }
+  const geri=await _get(k);
+  if(geri!==str) throw new Error('geri okuma eşleşmedi');
+}
+function dus(){
+  const sira=['WS','LS','MEM'];
+  const i=sira.indexOf(motor);
+  if(i<sira.length-1){ TANI.dustu.push(MOTOR[motor]); motor=sira[i+1]; return true; }
+  return false;
+}
+const _bek={}, _zam={};
+function sv(k,v){
+  _bek[k]=v;
+  if(durum!=='err'){ durum='yaz'; rozet(); }
+  clearTimeout(_zam[k]);
+  _zam[k]=setTimeout(()=>_akit(k),300);
+}
+async function _akit(k){
+  const str=JSON.stringify(_bek[k]);
+  TANI.boyut=str.length;
+  for(let tur=0;tur<3;tur++){
+    for(let i=1;i<=2;i++){
+      try{
+        await _set(k,str);
+        TANI.sonYazma=saatStr(); TANI.sonHata=null; TANI.dogrulandi=true;
+        durum='ok'; rozet(); return;
+      }catch(e){ TANI.sonHata=String((e&&e.message)||e); }
+      await new Promise(r=>setTimeout(r,250*i));
+    }
+    if(!dus()) break;                 /* motoru düşür, tekrar dene */
+  }
+  TANI.dogrulandi=false; durum='err'; rozet();
+}
+function kaydet(){ sv(KA,{v:4,done:S.done,den:S.den,cfg:S.cfg,log:S.log}); }
+
+let S={tab:'bugun',done:{},den:DENEME0,log:[],
+  cfg:{eff:0.55,tasi:{},at:{}},
+  ac:null,form:false,modal:null,taniAcik:false};
+
+/* ══════════════════ ZAMAN (Europe/Istanbul) ══════════════════ */
+const TZ='Europe/Istanbul';
+function trNow(){
+  const f=new Intl.DateTimeFormat('en-CA',{timeZone:TZ,year:'numeric',month:'2-digit',
+    day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false});
+  const p={}; f.formatToParts(new Date()).forEach(x=>p[x.type]=x.value);
+  return {ymd:`${p.year}-${p.month}-${p.day}`, hh:+p.hour, mm:+p.minute,
+          dk:(+p.hour)*60+(+p.minute)};
+}
+const gunFark=(a,b)=>Math.round((Date.parse(b+'T00:00:00Z')-Date.parse(a+'T00:00:00Z'))/864e5);
+function gunIdx(){ return Math.min(29,Math.max(1,gunFark(BASLA,trNow().ymd)+1)); }
+function kalanGun(){ return Math.max(0,gunFark(trNow().ymd,SINAV_YMD)); }
+function bugunISO(){ return trNow().ymd; }
+const saatStr=()=>{const t=trNow();return String(t.hh).padStart(2,'0')+':'+String(t.mm).padStart(2,'0')};
+function artiGun(iso,n){ const d=new Date(Date.parse(iso+'T00:00:00Z')+n*864e5);
+  return d.toISOString().slice(0,10); }
+const SINAV_YMD='2026-08-23';
+
+/* ══════════════════ YARDIMCI ══════════════════ */
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const items=p=>(p.it||[]).filter(i=>i.s>0);
+const tid=(g,i)=>g+'.'+i;
+/* Bir görevin gösterileceği gün: taşındıysa oraya */
+function gunuOf(g,i){ return S.cfg.tasi[tid(g,i)] || g; }
+function atildi(g,i){ return !!S.cfg.at[tid(g,i)]; }
+function gorevlerOf(g){
+  const out=[];
+  PLAN.forEach(p=>items(p).forEach((it,i)=>{
+    if(atildi(p.g,i)) return;
+    if(gunuOf(p.g,i)===g) out.push({...it,_g:p.g,_i:i,_id:tid(p.g,i),_tasindi:gunuOf(p.g,i)!==p.g});
+  }));
+  return out;
+}
+const bitti=t=>!!S.done[t._id];
+function planIst(){
+  let t=0,d=0;
+  PLAN.forEach(p=>{ if(p.off) return;
+    items(p).forEach((_,i)=>{ if(atildi(p.g,i)) return; t++; if(S.done[tid(p.g,i)]) d++; }); });
+  return {t,d,y:t?Math.round(d/t*100):0};
+}
+/* Zamanında yapılma: geçmiş günlerin görevleri tamamlandı mı */
+function zamanlama(){
+  const bg=gunIdx(); let ge=0,gd=0;
+  for(let g=1;g<bg;g++){ const L=gorevlerOf(g); ge+=L.length; gd+=L.filter(bitti).length; }
+  return {ge,gd,y:ge?Math.round(gd/ge*100):100,borc:ge-gd};
+}
+function dial(v,size,sw,col){
+  const r=(size-sw)/2, c=2*Math.PI*r;
+  return `<svg width="${size}" height="${size}" style="transform:rotate(-90deg)" aria-hidden="true">
+   <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--ln2)" stroke-width="${sw}"/>
+   <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${col}" stroke-width="${sw}"
+     stroke-dasharray="${c}" stroke-dashoffset="${c*(1-v/100)}" stroke-linecap="butt"
+     style="transition:stroke-dashoffset .7s cubic-bezier(.4,0,.2,1)"/></svg>`;
+}
+const tag=(c,t)=>`<span class="tag" style="color:${c};border:1px solid ${c}">${t}</span>`;
+const pchip=p=>tag(PRI[p].c,PRI[p].l);
+const TICK='<svg viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+
+/* ══════════════════ YILDIZ HARİTASI ══════════════════ */
+function tohum(n){ let s=(n>>>0)||7; return ()=>{ s=(s*1664525+1013904223)>>>0; return s/4294967296; }; }
+function yildizPath(x,y,r){
+  const k=r*0.34;
+  return `M${x.toFixed(1)} ${(y-r).toFixed(1)}L${(x+k).toFixed(1)} ${(y-k).toFixed(1)}`+
+    `L${(x+r).toFixed(1)} ${y.toFixed(1)}L${(x+k).toFixed(1)} ${(y+k).toFixed(1)}`+
+    `L${x.toFixed(1)} ${(y+r).toFixed(1)}L${(x-k).toFixed(1)} ${(y+k).toFixed(1)}`+
+    `L${(x-r).toFixed(1)} ${y.toFixed(1)}L${(x-k).toFixed(1)} ${(y-k).toFixed(1)}Z`;
+}
+function fon(W,H,adet,seed){
+  const rn=tohum(seed); let o='';
+  for(let i=0;i<adet;i++){
+    const x=rn()*W,y=rn()*H,r=0.35+rn()*0.8,op=0.10+rn()*0.28;
+    o+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="#EAE6DD" opacity="${op.toFixed(2)}"/>`;
+  }
+  return o;
+}
+function gunOran(g){
+  const L=gorevlerOf(g); if(!L.length) return null;
+  return L.filter(bitti).length/L.length;
+}
+/* Bugünün takımyıldızı: her görev bir yıldız; tamamlananlar yanar ve birleşir */
+function bugunHarita(L){
+  const W=320,H=126,n=L.length;
+  if(!n) return '';
+  const px=i=>n===1?W/2:26+i*(W-52)/(n-1);
+  const py=i=>62+25*Math.sin(i*0.92+0.55);
+  let g=fon(W,H,46,11);
+  for(let i=0;i<n-1;i++){
+    const ik=bitti(L[i])&&bitti(L[i+1]);
+    g+=`<line x1="${px(i).toFixed(1)}" y1="${py(i).toFixed(1)}" x2="${px(i+1).toFixed(1)}" `+
+       `y2="${py(i+1).toFixed(1)}" stroke="${ik?'#B08D4F':'#39434F'}" stroke-width="${ik?1:0.7}" `+
+       `opacity="${ik?0.85:0.4}"${ik?'':' stroke-dasharray="2 3"'}/>`;
+  }
+  L.forEach((it,i)=>{
+    const ok=bitti(it),x=px(i),y=py(i),r=3.1+Math.min(2.9,it.s*0.62);
+    if(ok){
+      g+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r*2.6).toFixed(1)}" fill="#B08D4F" opacity="0.10"/>`;
+      g+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r*1.55).toFixed(1)}" fill="#D8B87A" opacity="0.16"/>`;
+      g+=`<path d="${yildizPath(x,y,r)}" fill="#D8B87A"/>`;
+    } else {
+      g+=`<path d="${yildizPath(x,y,r)}" fill="none" stroke="#67707A" stroke-width="0.9"/>`;
+    }
+    g+=`<text x="${x.toFixed(1)}" y="${(y+r+11).toFixed(1)}" fill="${ok?'#B08D4F':'#67707A'}" `+
+       `font-size="7.5" font-family="ui-monospace,monospace" text-anchor="middle">${i+1}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block" `+
+    `role="img" aria-label="Bugünün görev haritası">${g}</svg>`;
+}
+/* Kuş bakışı: 29 gün, üç faz bandı, her bandın altında bölümlü doluluk */
+function planHarita(){
+  const W=320,H=196,bg=gunIdx();
+  const bant=[{f:1,y:36},{f:2,y:96},{f:3,y:156}];
+  let g=fon(W,H,88,29);
+  bant.forEach(({f,y})=>{
+    const [a,z]=FAZ[f].g,n=z-a+1,x0=30,x1=W-16;
+    const px=i=>n===1?(x0+x1)/2:x0+i*(x1-x0)/(n-1);
+    const py=i=>y+9*Math.sin(i*1.15+f);
+    g+=`<text x="6" y="${y+3}" fill="#B08D4F" font-size="8" font-weight="700" `+
+       `font-family="ui-monospace,monospace" letter-spacing="1">F${f}</text>`;
+    for(let i=0;i<n-1;i++){
+      const ik=(gunOran(a+i)===1)&&(gunOran(a+i+1)===1);
+      g+=`<line x1="${px(i).toFixed(1)}" y1="${py(i).toFixed(1)}" x2="${px(i+1).toFixed(1)}" `+
+         `y2="${py(i+1).toFixed(1)}" stroke="${ik?'#B08D4F':'#28303C'}" `+
+         `stroke-width="${ik?0.9:0.6}" opacity="${ik?0.8:0.6}"/>`;
+    }
+    for(let i=0;i<n;i++){
+      const gun=a+i,o=gunOran(gun),x=px(i),yy=py(i);
+      const p=PLAN.find(q=>q.g===gun)||{};
+      const gecmis=gun<bg,borc=gecmis&&o!==null&&o<1;
+      const r=p.off?2.2:(2.6+(o||0)*2.2);
+      if(p.off){
+        g+=`<circle cx="${x.toFixed(1)}" cy="${yy.toFixed(1)}" r="2.1" fill="none" stroke="#5C7B9C" stroke-width="0.8"/>`;
+      } else if(o===1){
+        g+=`<circle cx="${x.toFixed(1)}" cy="${yy.toFixed(1)}" r="${(r*2.4).toFixed(1)}" fill="#B08D4F" opacity="0.10"/>`;
+        g+=`<path d="${yildizPath(x,yy,r)}" fill="#D8B87A"/>`;
+      } else if(borc){
+        g+=`<path d="${yildizPath(x,yy,r)}" fill="none" stroke="#A8574F" stroke-width="0.95"/>`;
+      } else {
+        g+=`<path d="${yildizPath(x,yy,r)}" fill="none" stroke="#67707A" stroke-width="0.8"/>`;
+        if(o>0) g+=`<circle cx="${x.toFixed(1)}" cy="${yy.toFixed(1)}" r="${(r*0.5).toFixed(1)}" fill="#B08D4F" opacity="0.75"/>`;
+      }
+      if(gun===bg) g+=`<circle cx="${x.toFixed(1)}" cy="${yy.toFixed(1)}" r="${(r+3.6).toFixed(1)}" `+
+        `fill="none" stroke="#EAE6DD" stroke-width="0.8" opacity="0.85"/>`;
+      if(p.deneme) g+=`<circle cx="${x.toFixed(1)}" cy="${(yy-r-4.4).toFixed(1)}" r="0.95" fill="#A8574F"/>`;
+    }
+    const bw=(x1-x0)/n,by=y+24;
+    let T=0,D=0;
+    for(let i=0;i<n;i++){
+      const gun=a+i,o=gunOran(gun),p=PLAN.find(q=>q.g===gun)||{},w=bw-1.6;
+      const L=gorevlerOf(gun); T+=L.length; D+=L.filter(bitti).length;
+      g+=`<rect x="${(x0+i*bw).toFixed(1)}" y="${by}" width="${w.toFixed(1)}" height="2.6" fill="#28303C"/>`;
+      if(!p.off&&o) g+=`<rect x="${(x0+i*bw).toFixed(1)}" y="${by}" width="${(w*o).toFixed(1)}" `+
+        `height="2.6" fill="${o===1?'#5A8F76':'#B08D4F'}"/>`;
+    }
+    g+=`<text x="${x1}" y="${by+12}" fill="#67707A" font-size="7.5" `+
+       `font-family="ui-monospace,monospace" text-anchor="end">${D}/${T}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block" `+
+    `role="img" aria-label="29 günlük plan haritası">${g}</svg>`;
+}
+
+/* ══════════════════ DENEME MATEMATİĞİ ══════════════════ */
+const TEMEL=Object.keys(BR).filter(k=>BR[k].t), KLINIK=Object.keys(BR).filter(k=>!BR[k].t);
+const sumT=d=>TEMEL.reduce((a,k)=>a+(d.b[k]??0),0);
+const sumK=d=>KLINIK.reduce((a,k)=>a+(d.b[k]??0),0);
+const kpuan=(t,k)=>+(0.2068*t+0.2765*k+40.27).toFixed(2);
+const denK=d=>kpuan(sumT(d),sumK(d));
+
+/* Branş bazlı çalışma tamamlanma oranı (saat ağırlıklı) */
+function brTamam(){
+  const acc={}; Object.keys(BR).forEach(k=>acc[k]={t:0,d:0});
+  PLAN.forEach(p=>items(p).forEach((it,i)=>{
+    if(it.br==='--'||!acc[it.br]||atildi(p.g,i)) return;
+    acc[it.br].t+=it.s; if(S.done[tid(p.g,i)]) acc[it.br].d+=it.s;
+  }));
+  const out={}; Object.keys(acc).forEach(k=>out[k]=acc[k].t?acc[k].d/acc[k].t:0);
+  return out;
+}
+/* Tahmin: mevcut net + (tavan − mevcut) × tamamlanma × verim */
+function tahmin(eff){
+  eff=eff??S.cfg.eff;
+  const son=S.den[S.den.length-1], tam=brTamam(), b={};
+  Object.keys(BR).forEach(k=>{
+    const cur=son.b[k]??0, tavan=0.72*BR[k].s;
+    b[k]=+(cur+Math.max(0,tavan-cur)*tam[k]*eff).toFixed(2);
+  });
+  const t=TEMEL.reduce((a,k)=>a+b[k],0), kl=KLINIK.reduce((a,k)=>a+b[k],0);
+  return {b,t:+t.toFixed(2),k:+kl.toFixed(2),kp:kpuan(t,kl)};
+}
+/* Kalibrasyon: kayıtlı tahmin-gerçek çiftlerinden verim katsayısını güncelle */
+function kalibre(){
+  const L=S.log.filter(x=>x.tip==='tahmin'&&x.gercek!=null);
+  if(!L.length) return {n:0,sapma:null};
+  const sap=L.map(x=>x.gercek-x.tahmin);
+  const ort=sap.reduce((a,b)=>a+b,0)/sap.length;
+  return {n:L.length,sapma:+ort.toFixed(2)};
+}
+/* Kazanç potansiyeli: bir branşa yatırımın K puanına katkısı */
+function kazanc(){
+  const son=S.den[S.den.length-1];
+  return Object.keys(BR).map(k=>{
+    const net=son.b[k]??0, s=BR[k].s, oran=Math.max(0,net/s);
+    const hedef=oran<0.25?0.55:oran<0.40?0.60:0.68;
+    const kaz=Math.max(0,(s*hedef-net))*(BR[k].t?0.2068:0.2765);
+    const seri=S.den.map(d=>Math.max(0,(d.b[k]??0)/s*100));
+    return {k,...BR[k],net,oran:oran*100,kaz:+kaz.toFixed(2),seri,
+      trend:seri.length>1?seri[seri.length-1]-seri[seri.length-2]:0,
+      hata:HATA0[k]||0};
+  }).sort((a,b)=>b.kaz-a.kaz);
+}
+
+/* ══════════════════ KOÇLUK ══════════════════ */
+function nudges(){
+  const N=[], z=zamanlama(), bg=gunIdx(), t=trNow(), kz=kazanc();
+  const bugunL=gorevlerOf(bg), kalanS=bugunL.filter(x=>!bitti(x)).reduce((a,b)=>a+b.s,0);
+
+  if(z.borc>0) N.push({t:`Geçmiş günlerden <b>${z.borc} görev</b> açık. Takvim sekmesinde <b>Yeniden Diz</b> bunları net kazancına göre önündeki günlere dağıtır, en düşük değerlileri düşürür.`});
+
+  const zayif=kz[0];
+  if(zayif && zayif.oran<30) N.push({t:`<b>${zayif.ad}</b> %${zayif.oran.toFixed(0)}’de ve en yüksek kazanç potansiyeli burada: <b>+${zayif.kaz} K puan</b>. Bugün bir blok buraya ayrılırsa en çok o döner.`});
+
+  if(t.dk>=15*60 && t.dk<22*60 && kalanS>0)
+    N.push({t:`Günün <b>${kalanS.toFixed(1)} saati</b> açık ve saat ${String(t.hh).padStart(2,'0')}:${String(t.mm).padStart(2,'0')}. Kalanı düşük yüke çevir: yanlış gözden geçirme ve kart, yeni zor konu değil.`});
+  if(t.dk>=15*60) N.push({t:`Kafein kesim saati geçti. Bundan sonrası gece uykusundan çalıyor — yarılanma ömrü 3–7 saat.`});
+  if(t.dk>=22*60+30) N.push({t:`Ekran kesimi. Bugün öğrendiğini mühürleyen şey bu gecenin uykusu; 23:00 hedefi.`});
+
+  const sonDen=S.den[S.den.length-1];
+  const fark=gunFark(sonDen.tarih,bugunISO());
+  if(fark>=4) N.push({t:`Son denemeden <b>${fark} gün</b> geçti. Deneme skoru en iyi ilerleme göstergen — ve serpiştirmenin doğal hali.`});
+
+  if(bg>=27) N.push({t:`Son üç gün: yeni konu girişi yok. Sadece koruma tekrarı, hata defteri ve uyku.`});
+  return N.slice(0,4);
+}
+
+/* ══════════════════ GÜNÜN AKIŞI ══════════════════ */
+function akis(p){
+  const R=[];
+  if(p.off) return [{t:'—',i:'İzin günü',d:'Ders yok. Uyku düzenini bozma, o kadar.',k:'off'}];
+  R.push({t:'07:00',i:'Uyanış ve 30 dk parlak ışık',d:'Sirkadiyen fazı öne çeker · pencere önü veya dışarı',k:'r'});
+  R.push({t:'07:30',i:'Isınma: 10 soru + dünün geri çağırması',d:'Kafeinsiz · güne geri çağırmayla başla · 25 dk',k:'a'});
+  if(p.kisa){
+    R.push({t:'09:00',i:'Kahve, ~120 mg kafein',d:'Uyanıştan 2 saat sonra · zirve 09:30–10:00, tam 10:15 bloğuna denk gelir',k:'r'});
+    R.push({t:'09:30',i:'Berber',d:'',k:'o'});
+    R.push({t:'13:50',i:'Sinema — kuzenler',d:'Bu da plana yazılı. Suçluluk yok.',k:'o'});
+    R.push({t:'17:00',i:'Blok · akşam çalışması',d:'5 saat',k:'b',x:0});
+    R.push({t:'19:30',i:'Ara',d:'Cihazsız 15 dk',k:'m'});
+    R.push({t:'19:45',i:'Blok · devam',d:'',k:'b',x:1});
+    R.push({t:'22:30',i:'Ekran kesimi',d:'',k:'r'});
+    R.push({t:'23:00',i:'Uyku',d:'7.5–9 saat',k:'u'});
+    return R;
+  }
+  if(p.sonGun){
+    R.push({t:'09:00',i:'Kahve, ~120 mg kafein',d:'Uyanıştan 2 saat sonra · zirve 09:30–10:00, tam 10:15 bloğuna denk gelir',k:'r'});
+    R.push({t:'09:00',i:'Blok · hafif geri çağırma',d:'Yeni konu yok',k:'b',x:0});
+    R.push({t:'12:30',i:'Öğle ve yürüyüş',d:'',k:'r'});
+    R.push({t:'14:00',i:'Blok · spot tablo ve çanta',d:'',k:'b',x:1});
+    R.push({t:'16:00',i:'Hafif yürüyüş',d:'Ağır egzersiz yok',k:'s'});
+    R.push({t:'21:00',i:'Expressive writing · 10 dk',d:'Kaygıları kâğıda dök (Ramirez & Beilock 2011)',k:'r'});
+    R.push({t:'22:00',i:'Ekran kesimi · kafein 15:00’ten beri yok',d:'',k:'r'});
+    R.push({t:'23:00',i:'Uyku — en kritik gece',d:'Uykusuzluk performansı en çok bozan tek hata',k:'u'});
+    return R;
+  }
+  const dn=!!p.deneme;
+  R.push({t:'08:00',i:'Blok 1 · yeni öğrenme',d:'2.0 sa · en zor konu · telefon başka odada',k:'b',x:0});
+  R.push({t:'09:00',i:'Kahve, ~120 mg kafein',d:'Uyanıştan 2 saat sonra · zirve 09:30–10:00, tam 10:15 bloğuna denk gelir',k:'r'});
+  R.push({t:'10:00',i:'Ara 15 dk',d:'Cihazsız · pencereden bak, yürü, su iç',k:'m'});
+  R.push({t:'10:15',i:dn?'DENEME · Temel oturumu':'Blok 2 · zirve',
+    d:dn?'135 dk · gerçek sınav saati':'2.25 sa · sınav saatine koşullanma',k:dn?'x':'b',x:dn?null:1});
+  R.push({t:'12:30',i:'Öğle — hafif, düşük glisemik',d:'Ağır öğün 14:45 dipini derinleştirir',k:'r'});
+  R.push({t:'13:15',i:'Şekerleme 20 dk',d:'Alarm 25 dk · 15:00’ten sonra yasak',k:'n'});
+  R.push({t:'13:45',i:'Blok 3',d:'1.0 sa',k:'b',x:dn?0:2});
+  R.push({t:'14:15',i:'Son kafein · küçük doz',d:'14:45 dipine karşı · bundan sonrası gece uykusundan çalar',k:'r'});
+  R.push({t:'14:45',i:dn?'DENEME · Klinik oturumu':'Blok 4 · zirve',
+    d:dn?'135 dk · gerçek sınav saati':'2.25 sa · dipe karşı ışık ve kısa kafein',k:dn?'x':'b',x:dn?null:3});
+  if(p.spor) R.push({t:'17:15',i:'Spor · 1 saat',d:'Sabah bloğundan ~4.5 sa sonra (van Dongen 2016) · duşla 1.25 sa',k:'s'});
+  else R.push({t:'17:00',i:'Serbest · yürüyüş',d:'Zihinsel toparlanma',k:'r'});
+  R.push({t:'18:30',i:'Akşam yemeği',d:'',k:'r'});
+  R.push({t:'19:15',i:dn?'Blok · deneme analizi':'Blok 5 · düşük yük',
+    d:dn?'Yanlışlar ve şanslı doğrular · geri bildirim etkiyi ikiye katlar (g 0.39→0.73)':'2.0 sa · bugünün ve dünün geri çağırması',
+    k:'b',x:dn?1:4});
+  R.push({t:'21:15',i:'Kapanış: yanlışları gözden geçir, yarını oku',d:'',k:'r'});
+  R.push({t:'22:30',i:'Ekran kesimi · kafein 15:00’ten beri yok',d:'Kafein yarılanma ömrü 3–7 saat',k:'r'});
+  R.push({t:'23:00',i:'Uyku',d:'7.5–9 saat · konsolidasyon burada olur',k:'u'});
+  return R;
+}
+const AK={b:'var(--brass)',x:'var(--clay)',s:'var(--jade)',u:'var(--steel)',
+  n:'var(--steel)',a:'var(--jade)',m:'var(--t3)',o:'var(--brass)',r:'var(--t3)',off:'var(--steel)'};
+
+/* ══════════════════ GÖRÜNÜM: BUGÜN ══════════════════ */
+function vBugun(){
+  const g=gunIdx(), p=PLAN.find(x=>x.g===g)||PLAN[0];
+  const L=gorevlerOf(g), db=L.filter(bitti).length;
+  const y=L.length?Math.round(db/L.length*100):0;
+  const R=akis(p), t=trNow();
+  let live=-1; R.forEach((r,i)=>{ if(r.t!=='—'){const[a,b]=r.t.split(':').map(Number); if(a*60+b<=t.dk) live=i;} });
+  const sir=L.findIndex(x=>!bitti(x));
+  let h='';
+
+  if(!p.off&&L.length){
+    const kalanS=L.filter(x=>!bitti(x)).reduce((a,b)=>a+b.s,0);
+    h+=`<div class="sky fade">${bugunHarita(L)}
+      <div class="skycap">Bugünün takımyıldızı · <b>${L.length} yıldızdan ${db}’i yandı</b>.
+        Yanan yıldızlar birbirine bağlanıyor; ${kalanS.toFixed(1)} saat hâlâ karanlıkta.</div></div>`;
+  }
+  h+=`<div class="hero fade" style="margin-top:12px">
+    <div><div class="glbl">Gün</div><div class="gnum">${p.g}</div>
+      <div style="font-size:11px;color:var(--t2);margin-top:6px;font-weight:600">${p.d} · ${p.gn}</div></div>
+    <div style="flex:1;min-width:0">
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px">
+        ${tag('var(--brass)','Faz '+p.faz)}
+        ${p.deneme?tag('var(--clay)','Deneme'):''}${p.spor?tag('var(--jade)','Spor'):''}
+        ${p.off?tag('var(--steel)','İzin'):''}${p.kisa?tag('var(--brass)','Kısa gün'):''}
+        ${p.sonGun?tag('var(--clay)','Son gün'):''}</div>
+      <div style="font-size:12.5px;color:var(--t2);line-height:1.5">
+        ${p.off?'Bugün ders yok — plana yazılı izin.':
+          `${L.length} görev · ${L.reduce((a,b)=>a+b.s,0).toFixed(1)} saat`}</div></div>
+    <div class="dial">${dial(y,58,3,y===100?'var(--jade)':'var(--brass)')}<b>${y}</b></div></div>`;
+
+  const nl=nudges();
+  if(nl.length){
+    h+=`<div class="sec"><h2>Koçluk</h2><span>${nl.length} not</span></div>`;
+    nl.forEach(n=>h+=`<div class="nudge fade"><span class="ic">§</span><p>${n.t}</p></div>`);
+  }
+
+  if(sir>=0&&!p.off){
+    const it=L[sir];
+    h+=`<div class="sec"><h2>Sıradaki</h2></div>
+      <div class="now fade">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="nowk">Şimdi bunu yap</span>${pchip(it.p)}
+          <span class="thr" style="margin-left:auto">${it.s} sa</span></div>
+        <div class="nowt">${esc(it.w)}</div>
+        ${it.src?`<div class="nowsrc">${esc(it.src)}</div>`:''}
+        <button class="btn hero" style="margin-top:13px" data-t="${it._id}">Tamamlandı</button></div>`;
+  }
+
+  h+=`<div class="sec"><h2>Günün akışı</h2></div><div class="flow fade">`;
+  R.forEach((r,i)=>{
+    const on=i===live, gec=i<live, c=AK[r.k]||'var(--t3)';
+    const it=r.x!=null?L[r.x]:null;
+    h+=`<div class="fr${on?' live':''}" style="${on?`border-left-color:${c}`:''};opacity:${gec?.45:1}">
+      <div class="ft">${r.t}</div><div style="flex:1;min-width:0">
+        <div class="fi">${esc(r.i)}${on?` <span style="font-size:8px;letter-spacing:.2em;color:${c};font-weight:800">ŞU AN</span>`:''}</div>
+        ${r.d?`<div class="fd">${esc(r.d)}</div>`:''}
+        ${it?`<div class="fsub"><div style="display:flex;gap:7px;align-items:center;margin-bottom:4px">
+          ${pchip(it.p)}<span class="thr">${it.s} sa</span></div>
+          <div style="font-size:12.5px;font-weight:600;line-height:1.38">${esc(it.w)}</div></div>`:''}
+      </div></div>`;
+  });
+  h+=`</div>`;
+
+  if(!p.off){
+    const acik=L.some(x=>!bitti(x));
+    h+=`<div class="sec"><h2>Görevler</h2>
+      <span style="margin-left:auto;display:flex;gap:2px">
+        <button class="txt" id="tumu" data-g="${g}" data-v="${acik?1:0}">${acik?'Tümünü işaretle':'Tümünü aç'}</button>
+      </span></div>
+      <div style="font-family:var(--mono);font-size:10.5px;color:var(--t3);margin:-4px 0 9px">
+        ${db}/${L.length} tamamlandı · ${L.filter(x=>!bitti(x)).reduce((a,b)=>a+b.s,0).toFixed(1)} saat kaldı</div>
+      <div style="display:flex;flex-direction:column;gap:4px">`;
+    L.forEach(it=>{
+      const ok=bitti(it);
+      h+=`<div class="task${ok?' done':''}" data-t="${it._id}"
+        style="border-left-color:${ok?'var(--jade)':PRI[it.p].c}">
+        <div class="cb${ok?' on':''}">${TICK}</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;gap:7px;align-items:center;margin-bottom:4px;flex-wrap:wrap">
+            ${pchip(it.p)}<span class="thr">${it.s} sa</span>
+            ${it.br!=='--'?`<span class="thr" style="color:var(--t3)">${BR[it.br].ad}</span>`:''}
+            ${it._tasindi?tag('var(--steel)','Gün '+it._g+'’den'):''}</div>
+          <div class="tw">${esc(it.w)}</div>
+          ${it.src?`<div class="tsrc">${esc(it.src)}</div>`:''}
+        </div></div>`;
+    });
+    h+=`</div>`;
+  }
+  return h;
+}
+
+/* ══════════════════ GÖRÜNÜM: TAKVİM ══════════════════ */
+function vTakvim(){
+  const bg=gunIdx(), z=zamanlama(), ist=planIst();
+  let h=`<div class="sky fade">${planHarita()}
+    <div class="skycap">Yirmi dokuz günün kuş bakışı · üç faz, üç takımyıldız.
+      <b>Dolu yıldız</b> bitmiş gün, <b style="color:var(--clay)">kırmızı</b> borçlu,
+      halkalı olan bugün, üstteki nokta deneme günü. Altındaki bölümlü çubuk gün gün doluluk.</div></div>
+    <div class="sec"><h2>İlerleme</h2><span>Gün ${bg} / 29</span></div>
+    <div class="grid3 fade">
+      ${stat('Zamanında',z.y+'%',null,z.y>=85?'var(--jade)':z.y>=60?'var(--brass)':'var(--clay)')}
+      ${stat('Plan bütünü',ist.y+'%',null)}
+      ${stat('Açık borç',z.borc,null,z.borc?'var(--clay)':'var(--jade)')}
+    </div>
+    <div class="card fade" style="padding:14px;margin-top:6px">
+      <div style="font-size:12px;color:var(--t2);line-height:1.55">
+        Geçmiş ${bg-1} günün ${z.ge} görevinden <b style="color:var(--bone)">${z.gd}</b> tamamlandı.
+        ${z.borc?`Açık kalan ${z.borc} görev aşağıda kırmızı kenarla duruyor. <b style="color:var(--bone)">Yeniden Diz</b>
+          bunları kazanç potansiyeline göre önündeki günlere dağıtır; kapasite yetmezse en düşük değerlileri düşürür ve hangilerini düştüğünü söyler.`
+          :`Borç yok. Bu tempoda kal.`}</div>
+      ${z.borc?`<button class="btn hero" style="margin-top:12px" id="dizze">Yeniden Diz</button>`:''}
+      ${Object.keys(S.cfg.at).length?`<div style="font-size:11px;color:var(--clay);margin-top:10px;font-family:var(--mono)">
+        ${Object.keys(S.cfg.at).length} görev düşürüldü · <button class="txt" id="geri" style="padding:0 4px">geri al</button></div>`:''}
+    </div>`;
+
+  let faz=null;
+  PLAN.forEach(p=>{
+    const L=gorevlerOf(p.g), db=L.filter(bitti).length;
+    const y=L.length?Math.round(db/L.length*100):0, ac=S.ac===p.g;
+    const gecmis=p.g<bg, borc=gecmis&&db<L.length;
+    if(p.faz!==faz){ const f=FAZ[p.faz];
+      h+=`<div class="phase fade"><h3>${f.n}</h3><p>${f.d}</p></div>`; faz=p.faz; }
+    h+=`<div class="day${p.g===bg?' today':''}${gecmis?' past':''}"
+        style="${borc?'border-left:2px solid var(--clay)':''}">
+      <div class="dayh" data-d="${p.g}">
+        <div class="dn" style="color:${y===100?'var(--jade)':(p.g===bg?'var(--brass)':'var(--t2)')}">${p.g}</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-bottom:3px">
+            <span class="thr">${p.d} · ${p.gn}</span>
+            ${p.g===bg?tag('var(--brass)','Bugün'):''}${p.deneme?tag('var(--clay)','Deneme'):''}
+            ${p.spor?tag('var(--jade)','Spor'):''}${p.off?tag('var(--steel)','İzin'):''}
+            ${borc?tag('var(--clay)',(L.length-db)+' açık'):''}</div>
+          <div style="font-size:12.5px;font-weight:600;color:${p.off?'var(--t3)':'var(--bone)'}">
+            ${p.off?'İzin günü':esc(L[0]?L[0].w.slice(0,46)+(L[0].w.length>46?'…':''):'—')}</div>
+          ${p.off?'':`<div class="bar"><i style="width:${y}%;background:${y===100?'var(--jade)':'var(--brass)'}"></i></div>`}
+        </div>
+        <div class="thr">${db}/${L.length}</div>
+        <div style="color:var(--t3);font-size:9px;transform:rotate(${ac?90:0}deg)">▶</div></div>`;
+    if(ac&&!p.off){
+      h+=`<div style="border-top:1px solid var(--ln)">
+        <div style="padding:8px 13px;border-bottom:1px solid var(--ln);display:flex">
+          <button class="txt" id="tumu" data-g="${p.g}" data-v="${L.some(x=>!bitti(x))?1:0}">
+            ${L.some(x=>!bitti(x))?'Tümünü işaretle':'Tümünü aç'}</button></div>`;
+      L.forEach((it,ix)=>{
+        const ok=bitti(it);
+        h+=`<div class="task" data-t="${it._id}" style="border:none;border-top:${ix?'1px solid var(--ln)':'none'};background:transparent">
+          <div class="cb${ok?' on':''}">${TICK}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;gap:6px;align-items:center;margin-bottom:3px;flex-wrap:wrap">
+              ${pchip(it.p)}<span class="thr">${it.s} sa</span>
+              ${it._tasindi?tag('var(--steel)','Gün '+it._g):''}</div>
+            <div class="tw" style="font-size:12.5px;${ok?'color:var(--t3);text-decoration:line-through':''}">${esc(it.w)}</div>
+            ${it.src?`<div class="tsrc">${esc(it.src)}</div>`:''}</div></div>`;
+      });
+      h+=`</div>`;
+    }
+    h+=`</div>`;
+  });
+  h+=`<div class="card fade" style="border-color:var(--clay);padding:17px;margin-top:14px;text-align:center">
+    <div class="eyebrow" style="color:var(--clay)">23 Ağustos 2026 · Pazar</div>
+    <div style="font-family:var(--serif);font-size:19px;margin:7px 0 9px">TUS · 2. Dönem</div>
+    <div class="thr" style="line-height:1.9">Temel Tıp Bilimleri &nbsp;10:15 · 135 dk<br>
+      Klinik Tıp Bilimleri &nbsp;14:45 · 135 dk</div></div>`;
+  return h;
+}
+function stat(k,v,d,col){
+  return `<div class="stat"><div class="k">${k}</div>
+    <div class="v"${col?` style="color:${col}"`:''}>${v}</div>
+    ${d!=null?`<div class="d" style="color:${d>=0?'var(--jade)':'var(--clay)'}">${d>=0?'+':''}${d}</div>`:''}</div>`;
+}
+
+/* ══════════════════ GÖRÜNÜM: DENEMELER ══════════════════ */
+function vDeneme(){
+  const L=S.den, son=L[L.length-1], onc=L[L.length-2];
+  const th=tahmin(), lo=tahmin(Math.max(0.2,S.cfg.eff-0.15)), hi=tahmin(Math.min(1,S.cfg.eff+0.15));
+  const kal=kalibre();
+  let h='';
+
+  h+=`<div class="pred fade">
+    <div class="eyebrow" style="color:var(--brass)">Şu an girsen — tahmini K puanı</div>
+    <div style="display:flex;align-items:flex-end;gap:14px;margin-top:9px">
+      <div class="predv">${th.kp.toFixed(1)}</div>
+      <div style="padding-bottom:5px">
+        <div class="predr">aralık ${lo.kp.toFixed(1)} – ${hi.kp.toFixed(1)}</div>
+        <div class="predr" style="color:var(--t3)">temel ${th.t.toFixed(1)} · klinik ${th.k.toFixed(1)}</div></div></div>
+    <div style="font-size:11.5px;color:var(--t2);line-height:1.55;margin-top:12px;
+      border-top:1px solid var(--ln);padding-top:11px">
+      Son deneme ${denK(son).toFixed(1)} idi. Fark, tamamladığın çalışmanın branş bazlı karşılığı —
+      verim katsayısı <b style="color:var(--bone)">${S.cfg.eff.toFixed(2)}</b>.
+      ${kal.n?`${kal.n} ölçümde ortalama sapma <b style="color:${Math.abs(kal.sapma)<1.5?'var(--jade)':'var(--clay)'}">${kal.sapma>0?'+':''}${kal.sapma}</b> puan — katsayı buna göre güncellendi.`
+        :`Henüz kalibrasyon yok. Yeni deneme girdiğinde bu tahmin gerçekle karşılaştırılıp katsayı düzeltilir.`}</div></div>`;
+
+  h+=`<div class="grid3 fade" style="margin-top:8px">
+    ${stat('Toplam net',(sumT(son)+sumK(son)).toFixed(1),onc?+((sumT(son)+sumK(son))-(sumT(onc)+sumK(onc))).toFixed(1):null)}
+    ${stat('K puanı',denK(son).toFixed(1),onc?+(denK(son)-denK(onc)).toFixed(1):null)}
+    ${stat('Deneme',L.length,null)}</div>`;
+
+  h+=`<div class="sec"><h2>Net trendi</h2></div><div class="chart fade">${cizgi(L)}</div>`;
+  h+=`<div class="sec"><h2>K puanı seyri</h2></div><div class="chart fade">${kCizgi(L,th.kp)}
+    <div class="thr" style="padding:9px 12px 2px;line-height:1.6">
+      K = 0.2068·Temel + 0.2765·Klinik + 40.27<br>Beş denemenin beşinde de tam tutuyor</div></div>`;
+
+  h+=`<button class="btn ${S.form?'':'hero'}" id="formac" style="margin:14px 0 10px">
+    ${S.form?'İptal':'Yeni deneme sonucu gir'}</button>`;
+
+  if(S.form){
+    h+=`<div class="card fade" style="padding:16px;margin-bottom:13px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div><div class="lbl">Tarih</div><input class="inp" type="date" id="f_t" value="${bugunISO()}"></div>
+        <div><div class="lbl">Kaynak</div><input class="inp" id="f_k" placeholder="PRETUS 4"></div></div>
+      <div class="lbl">Branş netleri</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:9px">`;
+    Object.keys(BR).forEach(k=>{
+      h+=`<div><div style="font-size:9.5px;color:var(--t3);margin-bottom:4px;font-weight:600">
+        ${BR[k].ad} <span style="color:var(--ln2)">/${BR[k].s}</span></div>
+        <input class="inp" style="padding:9px" type="number" step="0.25" inputmode="decimal" data-br="${k}"></div>`;
+    });
+    h+=`</div><button class="btn hero" style="margin-top:15px" id="kaydet">Kaydet ve tahmini kalibre et</button></div>`;
+  }
+
+  h+=`<div class="sec"><h2>Geçmiş</h2></div><div style="display:flex;flex-direction:column;gap:4px">`;
+  [...L].reverse().forEach(d=>{
+    const lg=S.log.find(x=>x.tip==='tahmin'&&x.icin===d.id);
+    h+=`<div class="card" style="padding:12px 14px;display:flex;align-items:center;gap:12px">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700">${esc(d.kaynak)}</div>
+        <div class="thr" style="margin-top:2px">${d.tarih}${lg?` · tahmin ${lg.tahmin.toFixed(1)}`:''}</div></div>
+      <div style="text-align:right"><div class="thr">T ${sumT(d).toFixed(2)} · K ${sumK(d).toFixed(2)}</div>
+        <div style="font-family:var(--serif);font-size:16px">${(sumT(d)+sumK(d)).toFixed(1)}</div></div>
+      <div style="text-align:right;border-left:1px solid var(--ln);padding-left:12px;min-width:52px">
+        <div class="k" style="font-size:8px;letter-spacing:.14em;color:var(--t3);font-weight:800">K</div>
+        <div style="font-family:var(--serif);font-size:16px;color:var(--brass)">${denK(d).toFixed(1)}</div></div>
+      ${L.length>1?`<button data-sil="${d.id}" class="txt" style="padding:4px 6px">✕</button>`:''}</div>`;
+  });
+  return h+'</div>';
+}
+function cizgi(L){
+  const W=320,H=180,pl=28,pb=22,pt=10,pr=8;
+  const tot=L.map(d=>sumT(d)+sumK(d)), mx=Math.max(...tot,100);
+  const x=i=>pl+i*(W-pl-pr)/Math.max(1,L.length-1), y=v=>pt+(1-v/mx)*(H-pt-pb);
+  const pth=a=>a.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+','+y(v).toFixed(1)).join(' ');
+  let g='';
+  [0,25,50,75,100].forEach(v=>{ if(v<=mx) g+=`<line x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}" stroke="#2A323D"/>
+    <text x="${pl-5}" y="${y(v)+3.5}" fill="#69727C" font-size="8.5" text-anchor="end">${v}</text>`;});
+  const ser=[['Toplam',tot,'#B08D4F',2],['Temel',L.map(sumT),'#5C7B9C',1.3],['Klinik',L.map(sumK),'#5A8F76',1.3]];
+  ser.forEach(([n,a,c,w])=>{ g+=`<path d="${pth(a)}" fill="none" stroke="${c}" stroke-width="${w}"/>`;
+    a.forEach((v,i)=>g+=`<circle cx="${x(i)}" cy="${y(v)}" r="${n==='Toplam'?3:2.2}" fill="${c}"/>`);});
+  L.forEach((d,i)=>g+=`<text x="${x(i)}" y="${H-7}" fill="#69727C" font-size="8.5" text-anchor="middle">D${i+1}</text>`);
+  let lg='<div style="display:flex;gap:15px;justify-content:center;padding:5px 0;font-size:10px;color:#9BA3AD">';
+  ser.forEach(([n,,c])=>lg+=`<span><i style="display:inline-block;width:8px;height:2px;background:${c};vertical-align:middle;margin-right:5px"></i>${n}</span>`);
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">${g}</svg>${lg}</div>`;
+}
+function kCizgi(L,th){
+  const W=320,H=132,pl=28,pb=20,pt=10,pr=26, mn=48,mx=72;
+  const v=L.map(denK);
+  const x=i=>pl+i*(W-pl-pr)/Math.max(1,L.length), y=q=>pt+(1-(q-mn)/(mx-mn))*(H-pt-pb);
+  let g='';
+  [50,55,60,65,70].forEach(q=>g+=`<line x1="${pl}" x2="${W-pr}" y1="${y(q)}" y2="${y(q)}" stroke="#2A323D"/>
+    <text x="${pl-5}" y="${y(q)+3.5}" fill="#69727C" font-size="8.5" text-anchor="end">${q}</text>`);
+  g+=`<line x1="${pl}" x2="${W-pr}" y1="${y(65)}" y2="${y(65)}" stroke="#A8574F" stroke-dasharray="3 3"/>
+    <text x="${W-pr+2}" y="${y(65)+3}" fill="#A8574F" font-size="8">65</text>`;
+  g+=`<path d="${v.map((q,i)=>(i?'L':'M')+x(i).toFixed(1)+','+y(q).toFixed(1)).join(' ')}" fill="none" stroke="#B08D4F" stroke-width="2"/>`;
+  v.forEach((q,i)=>g+=`<circle cx="${x(i)}" cy="${y(q)}" r="3" fill="#B08D4F"/>`);
+  /* tahmin noktası */
+  const xi=x(v.length);
+  g+=`<line x1="${x(v.length-1)}" y1="${y(v[v.length-1])}" x2="${xi}" y2="${y(th)}" stroke="#E9E5DC" stroke-width="1.4" stroke-dasharray="3 3"/>
+    <circle cx="${xi}" cy="${y(th)}" r="3.4" fill="none" stroke="#E9E5DC" stroke-width="1.6"/>
+    <text x="${xi}" y="${H-6}" fill="#E9E5DC" font-size="8.5" text-anchor="middle">şu an</text>`;
+  L.forEach((d,i)=>g+=`<text x="${x(i)}" y="${H-6}" fill="#69727C" font-size="8.5" text-anchor="middle">D${i+1}</text>`);
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">${g}</svg>`;
+}
+
+/* ══════════════════ GÖRÜNÜM: MATRİS ══════════════════ */
+function vMatris(){
+  const rows=kazanc(), tam=brTamam();
+  const renk=o=>o<25?'var(--clay)':o<40?'var(--brass)':o<55?'var(--t2)':'var(--jade)';
+  const durAd=o=>o<25?'Kanama':o<40?'Zayıf':o<55?'Orta':'Güçlü';
+  let h=`<div class="card fade" style="padding:15px;margin-bottom:12px">
+    <div style="font-size:12px;color:var(--t2);line-height:1.6">
+      Kazanç potansiyeline göre sıralı. K puanında <b style="color:var(--bone)">1 klinik net = 1.34 temel net</b>,
+      bu yüzden klinik branşlar üste çıkar. Sağdaki iğne son beş denemenin seyri; alttaki ikinci çubuk
+      o branşın planındaki çalışmanın ne kadarını bitirdiğini gösterir.</div></div>
+    <div style="display:flex;flex-direction:column;gap:4px">`;
+  rows.forEach(r=>{
+    const c=renk(r.oran), tc=Math.round(tam[r.k]*100);
+    h+=`<div class="card fade" style="border-left:2px solid ${c};padding:13px 14px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+            <span style="font-family:var(--serif);font-size:15px">${r.ad}</span>
+            ${tag(c,durAd(r.oran))}
+            <span style="font-size:8px;color:var(--t3);font-weight:800;letter-spacing:.14em">${r.t?'TEMEL':'KLİNİK'}</span></div>
+          <div class="thr" style="margin-top:4px">${r.net} / ${r.s} net · ${r.hata} işaretli soru</div></div>
+        ${igne(r.seri,c)}
+        <div style="text-align:right;min-width:46px">
+          <div style="font-family:var(--serif);font-size:19px;color:${c}">${r.oran.toFixed(0)}%</div>
+          <div class="thr" style="color:${r.trend>=0?'var(--jade)':'var(--clay)'}">${r.trend>=0?'▲':'▼'} ${Math.abs(r.trend).toFixed(0)}</div></div></div>
+      <div style="height:3px;background:var(--ln);overflow:hidden">
+        <div style="height:100%;width:${Math.min(100,r.oran)}%;background:${c};transition:width .6s"></div></div>
+      <div style="height:3px;background:var(--ln);overflow:hidden;margin-top:2px">
+        <div style="height:100%;width:${tc}%;background:var(--steel);transition:width .6s"></div></div>
+      <div style="display:flex;gap:12px;margin-top:8px;font-size:11px;color:var(--t2)">
+        <span>Kazanç <b style="color:var(--brass)">+${r.kaz}</b> K</span>
+        <span style="color:var(--t3)">Çalışma %${tc}</span></div></div>`;
+  });
+  h+=`</div>
+    <div class="sec"><h2>Güncelleme yükle</h2></div>
+    <div class="card fade" style="padding:16px">
+      <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:13px">
+        Claude’da program üzerinde bir değişiklik yaptığımızda sonucu buradan alırsın:
+        yeni deneme sonuçları, güncellenmiş kart destesi veya verim katsayısı.
+        Dosya <span class="thr">kart</span>, <span class="thr">den</span> ve
+        <span class="thr">ayar</span> alanlarını tanır.</div>
+      <input type="file" id="dosyaM" accept=".json,application/json,text/plain" style="display:none">
+      <div id="msgM" style="font-size:12px;margin-bottom:9px"></div>
+      <button class="btn hero" id="dosyaMbtn">Güncelleme dosyası seç</button></div>`;
+  return h;
+}
+function igne(s,c){
+  const w=46,h=20,mx=Math.max(...s,1),mn=Math.min(...s,0),rg=(mx-mn)||1;
+  const p=s.map((v,i)=>`${(i/(Math.max(1,s.length-1))*w).toFixed(1)},${(h-(v-mn)/rg*h).toFixed(1)}`).join(' ');
+  return `<svg width="${w}" height="${h}" style="flex:0 0 auto;opacity:.9" aria-hidden="true">
+    <polyline points="${p}" fill="none" stroke="${c}" stroke-width="1.5"/></svg>`;
+}
+
+
+/* ══════════════════ ÇALIŞMA → NET ANALİZİ ══════════════════ */
+/* İki deneme arasında hangi branşa kaç saat harcandı ve net kaç değişti?
+   Görev tamamlama tarihleri kullanılır; tarihsiz eski kayıtlar sayılmaz. */
+function pencereSaat(bas,bit){
+  const s={}; Object.keys(BR).forEach(k=>s[k]=0);
+  let tarihsiz=0;
+  PLAN.forEach(p=>items(p).forEach((it,i)=>{
+    const d=S.done[tid(p.g,i)];
+    if(!d) return;
+    if(typeof d!=='string'){ tarihsiz++; return; }
+    if(it.br==='--'||s[it.br]===undefined) return;
+    if(d>bas && d<=bit) s[it.br]+=it.s;
+  }));
+  return {saat:s,tarihsiz};
+}
+function analizSatir(){
+  const L=S.den; if(L.length<2) return null;
+  const son=L[L.length-1], onc=L[L.length-2];
+  const {saat,tarihsiz}=pencereSaat(onc.tarih,son.tarih);
+  const rows=Object.keys(BR).map(k=>{
+    const h=+saat[k].toFixed(1), d=+(((son.b[k]??0)-(onc.b[k]??0))).toFixed(2);
+    let hkm,hc;
+    if(h>=2&&d>=1){ hkm='Verimli'; hc='var(--jade)'; }
+    else if(h>=2&&d<0.5){ hkm='Çalıştın, dönmedi'; hc='var(--clay)'; }
+    else if(h<1&&d>=1){ hkm='Çalışmadan arttı'; hc='var(--steel)'; }
+    else if(h<1&&d<=-1){ hkm='Dokunmadın, geriledi'; hc='var(--brass)'; }
+    else { hkm='Belirsiz'; hc='var(--t3)'; }
+    return {k,ad:BR[k].ad,t:BR[k].t,saat:h,delta:d,
+      verim:h>0?+(d/h).toFixed(2):null,hkm,hc};
+  }).sort((a,b)=>b.saat-a.saat);
+  const toplamS=rows.reduce((a,b)=>a+b.saat,0);
+  const toplamD=rows.reduce((a,b)=>a+b.delta,0);
+  return {rows,onc,son,toplamS:+toplamS.toFixed(1),toplamD:+toplamD.toFixed(2),tarihsiz,
+    verim:toplamS>0?+(toplamD/toplamS).toFixed(2):null};
+}
+function serpme(rows){
+  const W=320,H=170,pl=32,pb=26,pt=12,pr=10;
+  const mxS=Math.max(2,...rows.map(r=>r.saat));
+  const mnD=Math.min(-1,...rows.map(r=>r.delta)), mxD=Math.max(1,...rows.map(r=>r.delta));
+  const x=v=>pl+(v/mxS)*(W-pl-pr);
+  const y=v=>pt+(1-(v-mnD)/(mxD-mnD))*(H-pt-pb);
+  let g='';
+  g+=`<line x1="${pl}" x2="${W-pr}" y1="${y(0).toFixed(1)}" y2="${y(0).toFixed(1)}" stroke="#39434F"/>`;
+  g+=`<text x="${pl-5}" y="${(y(0)+3).toFixed(1)}" fill="#67707A" font-size="8" text-anchor="end">0</text>`;
+  g+=`<text x="${pl-5}" y="${(y(mxD)+7).toFixed(1)}" fill="#67707A" font-size="8" text-anchor="end">+${mxD.toFixed(0)}</text>`;
+  g+=`<text x="${pl-5}" y="${(y(mnD)).toFixed(1)}" fill="#67707A" font-size="8" text-anchor="end">${mnD.toFixed(0)}</text>`;
+  g+=`<text x="${(W/2).toFixed(0)}" y="${H-4}" fill="#67707A" font-size="8" text-anchor="middle">çalışılan saat →</text>`;
+  rows.forEach(r=>{
+    if(r.saat===0&&r.delta===0) return;
+    const cx=x(r.saat),cy=y(r.delta);
+    g+=`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="3.4" fill="${r.hc}" opacity="0.9"/>`;
+    g+=`<text x="${(cx+5).toFixed(1)}" y="${(cy+3).toFixed(1)}" fill="#9AA2AC" font-size="7.5">${r.ad.slice(0,9)}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">${g}</svg>`;
+}
+function vAnaliz(){
+  const A=analizSatir();
+  if(!A) return `<div class="card fade" style="padding:16px">
+    <div style="font-size:12.5px;color:var(--t2);line-height:1.6">
+      Analiz için en az iki deneme gerekli. Deneme sekmesinden yeni sonuç girdiğinde
+      bu bölüm iki deneme arasındaki çalışmanı net değişimiyle karşılaştırır.</div></div>`+foot();
+  let h=`<div class="sec"><h2>Çalışma karşılığı</h2><span>${A.onc.kaynak} → ${A.son.kaynak}</span></div>
+    <div class="grid3 fade">
+      ${stat('Çalışılan saat',A.toplamS,null)}
+      ${stat('Net değişimi',(A.toplamD>0?'+':'')+A.toplamD,null,A.toplamD>=0?'var(--jade)':'var(--clay)')}
+      ${stat('Saat başına net',A.verim===null?'—':(A.verim>0?'+':'')+A.verim,null,
+        A.verim===null?null:(A.verim>=0.15?'var(--jade)':A.verim>=0?'var(--brass)':'var(--clay)'))}</div>
+    <div class="card fade" style="padding:14px;margin-top:6px">
+      <div style="font-size:12px;color:var(--t2);line-height:1.6">
+        ${A.onc.tarih} ile ${A.son.tarih} arasında işaretlediğin görevlerin saatleri, o branşın
+        net değişimiyle yan yana. <b style="color:var(--bone)">Saat başına net</b>, çalışmanın
+        gerçekten döndüğünü gösteren tek sayı.
+        ${A.tarihsiz?`<br><br><span style="color:var(--brass)">${A.tarihsiz} eski işaret tarihsiz olduğu için sayılmadı</span> — bundan sonra her işaret tarihiyle kaydediliyor.`:''}
+      </div></div>
+    <div class="sec"><h2>Saat — net dağılımı</h2></div>
+    <div class="chart fade">${serpme(A.rows)}
+      <div class="thr" style="padding:8px 12px 2px;line-height:1.6">
+        Sağ üst: çalıştın ve döndü. Sağ alt: çalıştın ama düştü — yöntem sorunu.<br>
+        Sol üst: çalışmadan arttı, muhtemelen deneme kolaylığı veya şans.</div></div>
+    <div class="sec"><h2>Branş branş</h2></div>
+    <div style="display:flex;flex-direction:column;gap:4px">`;
+  A.rows.forEach(r=>{
+    h+=`<div class="card" style="border-left:2px solid ${r.hc};padding:12px 13px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <span style="font-family:var(--serif);font-size:14px">${r.ad}</span>
+            ${tag(r.hc,r.hkm)}</div>
+          <div class="thr" style="margin-top:4px">${r.saat} saat çalışma ·
+            net ${r.delta>0?'+':''}${r.delta}${r.verim!==null?` · saat başına ${r.verim>0?'+':''}${r.verim}`:''}</div></div>
+        <div style="font-family:var(--serif);font-size:18px;color:${r.delta>=0?'var(--jade)':'var(--clay)'}">
+          ${r.delta>0?'+':''}${r.delta}</div></div></div>`;
+  });
+  h+=`</div>
+    <div class="card fade" style="padding:14px;margin-top:10px;border-left:2px solid var(--brass)">
+      <div style="font-size:11.5px;color:var(--t2);line-height:1.6">
+        <b style="color:var(--bone)">Dikkat:</b> iki deneme farklı zorlukta olabilir, branş başına soru
+        sayısı az olduğu için tek karşılaştırmadaki gürültü yüksektir. Üç dört denemeden sonra
+        yön anlam kazanır; tek bir düşüşü yöntem hatası saymadan önce tekrarını bekle.</div></div>`;
+  return h+foot();
+}
+
+/* ══════════════════ DİYALOGLAR ══════════════════ */
+/* iframe içinde prompt/confirm/alert engellenir; hepsi uygulama içi panel. */
+function vModal(){
+  const m=S.modal; if(!m) return '';
+  let g='';
+  if(m.tip==='onay'){
+    g=`<h3>${esc(m.baslik)}</h3><div class="sub">${m.mesaj}</div>
+      <button class="btn warn" id="m_onay">${esc(m.onayYazi||'Onaylıyorum')}</button>
+      <button class="btn" style="margin-top:6px" id="m_kapat">Vazgeç</button>`;
+  } else {
+    g=`<h3>${esc(m.baslik)}</h3><div class="sub">${m.mesaj}</div>
+      <button class="btn hero" id="m_kapat">Tamam</button>`;
+  }
+  return `<div class="veil" id="veil"><div class="sheet" id="sheet">${g}</div></div>`;
+}
+function modalOku(){}
+
+/* ══════════════════ DOSYA İLE İÇE ALMA ══════════════════ */
+/* Uygulama artık ağa bağlanmıyor. Kartlar ve güncellemeler JSON dosyası
+   olarak yüklenir; böylece iPad ana ekranında tamamen çevrimdışı çalışır.
+   Beklenen biçim:
+     {"kart":[{"br":"dh","konu":"...","soru":"...","cevap":"...","tuzak":"..."}]}
+     {"den":[{"id":"d6","tarih":"2026-07-30","kaynak":"PRETUS 4","b":{...}}]}
+     {"ayar":{"eff":0.55}}
+   Sadece kart dizisi de gönderilebilir: [{...},{...}]                     */
+function ithalEt(txt,msgId){
+  const say=(c,t)=>{ const m=document.getElementById(msgId);
+    if(m){ m.style.color=c; m.textContent=t; } };
+  let d;
+  try{ d=JSON.parse(txt); }
+  catch(e){ say('var(--clay)','Dosya okunamadı — geçerli JSON değil.'); return; }
+  if(Array.isArray(d)) d={kart:d};
+  if(!d||typeof d!=='object'){ say('var(--clay)','Beklenmeyen biçim.'); return; }
+  const not=[];
+  if(Array.isArray(d.den)&&d.den.length){
+    const g=d.den.filter(x=>x&&x.b&&x.tarih);
+    if(g.length){ S.den=g; kaydet(); not.push(`${g.length} deneme yüklendi`); }
+  }
+  if(d.ayar&&typeof d.ayar.eff==='number'){
+    S.cfg.eff=Math.max(0.1,Math.min(1,d.ayar.eff)); kaydet();
+    not.push('verim katsayısı güncellendi');
+  }
+  if(!not.length){ say('var(--clay)','Dosyada tanınan alan yok. Beklenen: kart, den veya ayar.'); return; }
+  render();
+  setTimeout(()=>say('var(--jade)',not.join(' · ')),60);
+}
+function dosyaBagla(inputId,msgId){
+  const el=document.getElementById(inputId); if(!el||el._bagli) return;
+  el._bagli=1;
+  el.addEventListener('change',ev=>{
+    const f=ev.target.files&&ev.target.files[0]; if(!f) return;
+    const rd=new FileReader();
+    rd.onload=()=>ithalEt(String(rd.result),msgId);
+    rd.onerror=()=>{ const m=document.getElementById(msgId);
+      if(m){ m.style.color='var(--clay)'; m.textContent='Dosya okunamadı.'; } };
+    rd.readAsText(f);
+  });
+}
+function disaAktar(){
+  const veri={surum:4,tarih:bugunISO(),den:S.den,
+    ayar:{eff:S.cfg.eff},done:S.done};
+  const blob=new Blob([JSON.stringify(veri,null,1)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`tus-yedek-${bugunISO()}.json`;
+  a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+
+/* ══════════════════ YENİDEN DİZ ══════════════════ */
+function yenidenDiz(){
+  const bg=gunIdx(), kz={}; kazanc().forEach(r=>kz[r.k]=r.kaz);
+  /* açık borçlar */
+  const borc=[];
+  for(let g=1;g<bg;g++) gorevlerOf(g).forEach(it=>{ if(!bitti(it)) borc.push(it); });
+  if(!borc.length) return null;
+  /* değer = branş kazancı / saat; tekrar ve soru görevleri korunur */
+  const deger=it=>{
+    const k=it.br!=='--'&&kz[it.br]!=null?kz[it.br]:0.6;
+    const bonus=(it.p==='t'||it.p==='s')?1.35:(it.p==='k'?1.2:1);
+    return (k*bonus)/Math.max(0.5,it.s);
+  };
+  borc.sort((a,b)=>deger(b)-deger(a));
+  /* önündeki günlerin boş kapasitesi: günlük 9.5 sa hedef, izin günü 0 */
+  const kap={};
+  PLAN.filter(p=>p.g>=bg&&!p.off).forEach(p=>{
+    const yuk=gorevlerOf(p.g).reduce((a,b)=>a+b.s,0);
+    const hedef=p.deneme?5:p.kisa?5:p.sonGun?4:9.5;
+    kap[p.g]=Math.max(0,hedef-yuk);
+  });
+  const tasi={...S.cfg.tasi}, at={...S.cfg.at}, yer=[], dus=[];
+  borc.forEach(it=>{
+    const hedefG=Object.keys(kap).map(Number).sort((a,b)=>a-b).find(g=>kap[g]>=it.s);
+    if(hedefG){ kap[hedefG]-=it.s; tasi[it._id]=hedefG; delete at[it._id]; yer.push({it,g:hedefG}); }
+    else { at[it._id]=1; delete tasi[it._id]; dus.push(it); }
+  });
+  S.cfg.tasi=tasi; S.cfg.at=at;
+  return {yer,dus};
+}
+
+/* ══════════════════ RENDER ══════════════════ */
+const NAV=[
+ {k:'bugun',l:'Bugün',i:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/>'},
+ {k:'takvim',l:'Takvim',i:'<rect x="3.5" y="5" width="17" height="15.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'},
+ {k:'deneme',l:'Deneme',i:'<path d="M3 17l5-6 4 4 5-8 4 5"/>'},
+ {k:'analiz',l:'Analiz',i:'<path d="M4 20V9M9.5 20V4M15 20v-7M20.5 20V11"/>'},
+ {k:'matris',l:'Matris',i:'<rect x="3.5" y="3.5" width="7" height="7"/><rect x="13.5" y="3.5" width="7" height="7"/><rect x="3.5" y="13.5" width="7" height="7"/><rect x="13.5" y="13.5" width="7" height="7"/>'}
+];
+function foot(){
+  const m=SYNC[durum];
+  let h=`<div class="foot"><span class="sync" id="sync" style="color:${m[1]}"><i></i>${m[0]}</span>
+    <span class="thr" style="margin-left:auto">${motor==='WS'?'Claude':'Ana ekran'} · v4</span>
+    <button class="txt" id="tani">Tanı</button>
+    <button class="txt" id="sifirla">Sıfırla</button>`;
+  if(S.taniAcik){
+    h+=`<div class="diag">motor        : ${MOTOR[motor]}
+son yazma    : ${TANI.sonYazma||'—'}   doğrulandı: ${TANI.dogrulandi===null?'—':(TANI.dogrulandi?'evet':'HAYIR')}
+son boyut    : ${TANI.boyut} karakter
+son hata     : ${TANI.sonHata||'yok'}
+deneme kaydı: ${S.den.length}  ·  işaretli görev: ${Object.keys(S.done).length}
+düşülen motor: ${TANI.dustu.length?TANI.dustu.join(' → '):'yok'}</div>`;
+  }
+  return h+`</div>`;
+}
+function rozet(){
+  const el=document.getElementById('sync'); if(!el) return;
+  const m=SYNC[durum]; el.style.color=m[1]; el.innerHTML=`<i></i>${m[0]}`;
+}
+function render(){
+  const ist=planIst();
+  document.getElementById('kg').innerHTML=`${kalanGun()}<s>gün kaldı</s>`;
+  document.getElementById('ct').textContent=saatStr();
+  document.getElementById('cd').textContent=`Bursa · gün ${gunIdx()}`;
+  document.getElementById('rule').style.width=ist.y+'%';
+  document.getElementById('nav').innerHTML=NAV.map(n=>
+    `<button class="nb${S.tab===n.k?' on':''}" data-nav="${n.k}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round">${n.i}</svg>${n.l}</button>`).join('');
+  const v={bugun:vBugun,takvim:vTakvim,deneme:vDeneme,analiz:vAnaliz,matris:vMatris}[S.tab];
+  document.getElementById('app').innerHTML=(S.tab==='analiz'?v():v()+foot());
+  document.getElementById('modal').innerHTML=vModal();
+  dosyaBagla('dosyaM','msgM');
+}
+
+/* ══════════════════ OLAYLAR ══════════════════ */
+document.addEventListener('click',e=>{
+  const q=s=>e.target.closest(s);
+
+  /* diyalog açıkken önce onu işle, arka planı yut */
+  if(S.modal){
+    if(q('#m_kapat')){ S.modal=null; render(); return; }
+    if(q('#m_onay')){
+      const m=S.modal; S.modal=null;
+      if(m.eylem==='silDeneme'){ S.den=S.den.filter(x=>x.id!==m.veri); render(); kaydet(); }
+      else if(m.eylem==='sifirla'){
+        S.done={}; S.den=DENEME0; S.log=[];
+        S.cfg={eff:0.55,tasi:{},at:{}}; S.ac=null;
+        render(); kaydet(); 
+      }
+      return;
+    }
+    if(q('#veil')&&!q('#sheet')){ S.modal=null; render(); return; }
+    return;
+  }
+  const nav=q('[data-nav]');
+  if(nav){ S.tab=nav.dataset.nav; S.ac=null; window.scrollTo(0,0); render(); return; }
+  const d=q('[data-d]');
+  if(d){ const g=+d.dataset.d; S.ac=S.ac===g?null:g; render(); return; }
+  const f=q('[data-f]');
+  if(f){ S.filtre=f.dataset.f; render(); return; }
+  if(q('#formac')){ S.form=!S.form; render(); return; }
+  if(q('#tani')){ S.taniAcik=!S.taniAcik; render(); return; }
+
+  if(durum==='yuk') return;   /* yükleme bitmeden veri değiştirme */
+
+  const t=q('[data-t]');
+  if(t){ const id=t.dataset.t;
+    if(S.done[id]) delete S.done[id]; else S.done[id]=bugunISO();
+    if(navigator.vibrate) navigator.vibrate(10);
+    render(); kaydet(); return; }
+
+  const tm=q('#tumu');
+  if(tm){ const g=+tm.dataset.g, ac=tm.dataset.v==='1';
+    gorevlerOf(g).forEach(it=>{ if(ac) S.done[it._id]=bugunISO(); else delete S.done[it._id]; });
+    render(); kaydet(); return; }
+
+  if(q('#dizze')){
+    const r=yenidenDiz();
+    if(r){ S.modal={tip:'bilgi',baslik:'Yeniden dizildi',
+      mesaj:`<b>${r.yer.length} görev</b> önündeki günlere taşındı.`+
+        (r.dus.length?`<br><br><b style="color:var(--clay)">${r.dus.length} görev düşürüldü</b> `+
+          `(kapasite yok, en düşük net değeri):<br>`+
+          r.dus.map(x=>'· '+esc(x.w.slice(0,60))).join('<br>'):'')};
+      render(); kaydet(); }
+    return; }
+  if(q('#geri')){ S.cfg.at={}; render(); kaydet(); return; }
+
+  if(q('#dosyaMbtn')){ const el=document.getElementById('dosyaM'); if(el) el.click(); return; }
+  if(q('#yedek')){ disaAktar(); return; }
+
+  const sl=q('[data-sil]');
+  if(sl){ S.modal={tip:'onay',baslik:'Deneme silinsin mi?',mesaj:'Bu deneme kaydı ve trend noktası silinir.',
+    onayYazi:'Sil',eylem:'silDeneme',veri:sl.dataset.sil}; render(); return; }
+
+  if(q('#kaydet')){
+    const b={}; document.querySelectorAll('[data-br]').forEach(el=>b[el.dataset.br]=parseFloat(el.value)||0);
+    const yeni={id:'d'+Date.now(),tarih:document.getElementById('f_t').value||bugunISO(),
+      kaynak:document.getElementById('f_k').value||'Deneme',b};
+    /* kalibrasyon: kaydetmeden ÖNCEKİ tahmini gerçekle karşılaştır */
+    const th=tahmin(), ger=denK(yeni);
+    S.log=[...S.log,{tip:'tahmin',tarih:bugunISO(),icin:yeni.id,tahmin:th.kp,gercek:ger}];
+    const sonDen=S.den[S.den.length-1], taban=denK(sonDen);
+    const bekG=th.kp-taban, gerG=ger-taban;
+    if(bekG>0.4){ const o=Math.max(0.5,Math.min(1.8,gerG/bekG));
+      S.cfg.eff=+Math.max(0.15,Math.min(1,S.cfg.eff*(0.65+0.35*o))).toFixed(3); }
+    S.den=[...S.den,yeni]; S.form=false;
+    render(); kaydet(); kaydet(); kaydet();
+    return; }
+
+  if(q('#sifirla')){ S.modal={tip:'onay',baslik:'Her şey sıfırlansın mı?',
+    mesaj:'Tüm ilerleme, deneme kayıtları ve kartlar silinir. Geri alınamaz — önce <b>Yedek al</b>.',
+    onayYazi:'Sıfırla',eylem:'sifirla'}; render(); return; }
+});
+
+/* ══════════════════ BAŞLANGIÇ ══════════════════ */
+(async function init(){
+  render();
+  try{
+    const a=await _get(KA);
+    if(a){ const o=JSON.parse(a);
+      S.done=o.done||{};
+      S.den=(o.den&&o.den.length)?o.den:DENEME0;
+      S.cfg={eff:0.55,tasi:{},at:{},...(o.cfg||{})};
+      S.log=o.log||[];
+    }
+    durum='ok'; TANI.sonHata=null;
+  }catch(e){ durum='err'; TANI.sonHata='yükleme: '+String((e&&e.message)||e); }
+  render();
+  const n=document.getElementById('nojs'); if(n) n.remove();
+})();
+setInterval(()=>{ if(!S.modal&&(S.tab==='bugun'||S.tab==='takvim')) render(); },60000);
+</script></body></html>
