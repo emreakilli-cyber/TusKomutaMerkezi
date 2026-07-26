@@ -1,17 +1,23 @@
 {
-  "name": "TUS Komuta Merkezi",
-  "short_name": "TUS",
-  "description": "29 günlük TUS çalışma programı, deneme trendi ve çalışma-net analizi",
+  "name": "Rota — TUS 23 Ağustos",
+  "short_name": "Rota",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#0B0E14",
-  "theme_color": "#0B0E14",
-  "lang": "tr",
+  "orientation": "any",
+  "background_color": "#080B11",
+  "theme_color": "#080B11",
   "icons": [
-    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "./icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ]
 }
